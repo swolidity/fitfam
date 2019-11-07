@@ -12,7 +12,7 @@ const Home = () => (
 
     <Flex px={6} py={4} backgroundColor="#0D6CFF">
       <Box>
-        <Image src="/fitfam@2x.png" alt="FitFam" height="45px" />
+        <Image src="/fitfam@2x.png" alt="FitFam" height="45px" ignoreFallback />
       </Box>
     </Flex>
   </App>
