@@ -1,0 +1,42 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:root@localhost:3306/fitfam"
+}
+
+generator photon {
+  provider = "photonjs"
+}
+
+model User {
+  id        String    @default(cuid()) @id @unique
+  email     String    @unique
+  name      String
+  workouts  Workout[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Workout {
+  id        String       @default(cuid()) @id @unique
+  title     String
+  user      User
+  logs      WorkoutLog[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model WorkoutLog {
+  id        String   @default(cuid()) @id @unique
+  exercise  Exercise
+  reps      Int
+  weight    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Exercise {
+  id        String   @default(cuid()) @id @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
