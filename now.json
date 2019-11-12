@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "name": "FitFam",
+  "alias": "fitfam.me",
+  "build": {
+    "env": {
+      "MYSQL_URL": "@mysql-url"
+    }
+  },
+  "builds": [
+    {
+      "src": "api/src/index.ts",
+      "use": "@now/node@canary",
+      "config": {
+        "maxLambdaSize": "25mb"
+      }
+    },
+    { "src": "www/package.json", "use": "@now/next" }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/src/index.ts"
+    },
+    { "src": "/(.*)", "dest": "/www/$1", "continue": true }
+  ]
+}

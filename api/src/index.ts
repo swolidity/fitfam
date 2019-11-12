@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server";
 import { Photon } from "@generated/photon";
-import { makeSchema, asNexusMethod } from "nexus";
+import { makeSchema } from "nexus";
 import { nexusPrismaPlugin } from "nexus-prisma";
 import * as types from "./resolvers";
 
