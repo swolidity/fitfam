@@ -9,15 +9,24 @@
   },
   "builds": [
     {
+      "src": "api/routes/*.ts",
+      "use": "@now/node@canary"
+    },
+    {
       "src": "api/src/index.ts",
       "use": "@now/node@canary",
       "config": {
         "maxLambdaSize": "25mb"
       }
     },
+
     { "src": "www/package.json", "use": "@now/next" }
   ],
   "routes": [
+    {
+      "src": "/api/facebook-auth",
+      "dest": "/api/routes/facebook-auth.ts"
+    },
     {
       "src": "/api/(.*)",
       "dest": "/api/src/index.ts"

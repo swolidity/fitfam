@@ -1,6 +1,6 @@
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:root@localhost:3306/fitfam"
+  url = "***"
 }
 
 generator photon {
