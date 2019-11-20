@@ -19,8 +19,6 @@ passport.use(
     async (accessToken, refreshToken, { _json: profile }, cb) => {
       const photon: Photon = cachePhoton ? cachePhoton : new Photon();
 
-      console.log("profile", profile);
-
       const { name, email }: any = profile;
 
       const user = await photon.users.upsert({
