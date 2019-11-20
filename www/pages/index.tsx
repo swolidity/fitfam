@@ -8,6 +8,7 @@ const GET_USERS = gql`
     users {
       id
       name
+      username
     }
   }
 `;
@@ -18,13 +19,16 @@ const Home = () => {
   if (loading) return "loading...";
 
   console.log(data);
-  console.log(error);
 
   return (
     <div>
-      <Link href="/[username]" as={`/andy`}>
-        <a>Andy</a>
-      </Link>
+      {data.users.map(user => (
+        <div key={user.id}>
+          <Link href="/[username]" as={`/${user.username}`}>
+            <a>{user.username}</a>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 };
