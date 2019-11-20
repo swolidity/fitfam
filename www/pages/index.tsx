@@ -1,8 +1,5 @@
 import React from "react";
-import Head from "next/head";
-import App from "../components/App";
-import { Flex, Box, Image } from "@chakra-ui/core";
-import { withApollo } from "../lib/apollo";
+import Link from "next/link";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
@@ -21,26 +18,15 @@ const Home = () => {
   if (loading) return "loading...";
 
   console.log(data);
+  console.log(error);
 
   return (
-    <App>
-      <Head>
-        <title>FitFam - Home</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <Flex px={6} py={4} backgroundColor="#0D6CFF">
-        <Box>
-          <Image
-            src="/fitfam@2x.png"
-            alt="FitFam"
-            height="45px"
-            ignoreFallback
-          />
-        </Box>
-      </Flex>
-    </App>
+    <div>
+      <Link href="/[username]" as={`/andy`}>
+        <a>Andy</a>
+      </Link>
+    </div>
   );
 };
 
-export default withApollo(Home);
+export default Home;

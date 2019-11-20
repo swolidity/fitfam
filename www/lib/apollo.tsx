@@ -17,25 +17,19 @@ import fetch from "isomorphic-unfetch";
  * @param {Object} [config]
  * @param {Boolean} [config.ssr=true]
  */
-export function withApollo(PageComponent, { ssr = true } = {}) {
+export function withApollo(App, { ssr = true } = {}) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     const client = apolloClient || initApolloClient(apolloState, { getToken });
     return (
       <ApolloProvider client={client}>
-        <PageComponent {...pageProps} />
+        <App {...pageProps} />
       </ApolloProvider>
     );
   };
 
   if (process.env.NODE_ENV !== "production") {
     // Find correct display name
-    const displayName =
-      PageComponent.displayName || PageComponent.name || "Component";
-
-    // Warn if old way of installing apollo is used
-    if (displayName === "App") {
-      console.warn("This withApollo HOC only works with PageComponents.");
-    }
+    const displayName = App.displayName;
 
     // Set correct display name for devtools
     WithApollo.displayName = `withApollo(${displayName})`;
@@ -49,7 +43,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
     };
   }
 
-  if (ssr || PageComponent.getInitialProps) {
+  if (ssr || App.getInitialProps) {
     WithApollo.getInitialProps = async ctx => {
       const { AppTree } = ctx;
 
@@ -62,8 +56,8 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
         }
       ));
 
-      const pageProps = PageComponent.getInitialProps
-        ? await PageComponent.getInitialProps(ctx)
+      const pageProps = App.getInitialProps
+        ? await App.getInitialProps(ctx)
         : {};
 
       // Only on the server
@@ -122,7 +116,7 @@ function initApolloClient(initialState, { getToken }) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === "undefined") {
-    return createApolloClient(initialState, { getToken });
+    return createApolloClient(initialState, { getToken: () => undefined });
   }
 
   // Reuse client on the client-side
