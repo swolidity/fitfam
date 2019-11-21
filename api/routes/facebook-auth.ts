@@ -14,12 +14,15 @@ passport.use(
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       callbackURL: `${process.env.API_URL}/facebook-auth`,
-      profileFields: ["id", "displayName", "picture", "email"]
+      scope: ["email"],
+      profileFields: ["id", "name", "picture", "email"]
     },
     async (accessToken, refreshToken, { _json: profile }, cb) => {
       const photon: Photon = cachePhoton ? cachePhoton : new Photon();
 
-      const { name, email }: any = profile;
+      const { first_name, last_name, email }: any = profile;
+      const name = `${first_name} ${last_name}`;
+      const username = first_name.toLowerCase();
 
       const user = await photon.users.upsert({
         where: {
@@ -27,11 +30,13 @@ passport.use(
         },
         update: {
           name,
+          username,
           email,
           picture: `https://graph.facebook.com/${profile.id}/picture?type=large`
         },
         create: {
           name,
+          username,
           email,
           picture: `https://graph.facebook.com/${profile.id}/picture?type=large`
         }
@@ -51,13 +56,14 @@ app.get(
   "*",
   passport.authenticate("facebook", {
     session: false,
-    scope: ["id", "displayName", "picture", "email"]
+    scope: ["email"],
+    profileFields: ["id", "name", "picture", "email"]
   }),
   (req: any, res: any) => {
     const user = req.user;
     const token = jwt.sign({ user_id: user._id }, process.env.JWT_SECRET);
 
-    res.cookie("jwt", token);
+    res.cookie("token", token);
     res.redirect("/" + user.username);
   }
 );

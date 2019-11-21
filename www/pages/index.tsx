@@ -17,8 +17,7 @@ const Home = () => {
   const { loading, error, data } = useQuery(GET_USERS);
 
   if (loading) return "loading...";
-
-  console.log(data);
+  if (error) return <div>{error.message}</div>;
 
   return (
     <div>

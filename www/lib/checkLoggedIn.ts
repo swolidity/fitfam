@@ -4,18 +4,20 @@ export default apolloClient =>
   apolloClient
     .query({
       query: gql`
-        query getUser {
+        query getLoggedInUser {
           user {
             id
             name
+            email
+            picture
           }
         }
       `
     })
     .then(({ data }) => {
-      return { loggedInUser: data };
+      return { data };
     })
     .catch(() => {
       // Fail gracefully
-      return { loggedInUser: {} };
+      return { loggedInUser: null };
     });

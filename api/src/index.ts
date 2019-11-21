@@ -3,6 +3,7 @@ import { Photon } from "@generated/photon";
 import { makeSchema } from "nexus";
 import { nexusPrismaPlugin } from "nexus-prisma";
 import * as types from "./resolvers";
+import jwt from "jsonwebtoken";
 
 const photon = new Photon();
 
@@ -15,9 +16,54 @@ const schema = makeSchema({
   plugins: [nexusPrisma]
 });
 
+const getUser = async (photon: Photon, token: string) => {
+  return jwt.verify(
+    token,
+    process.env.JWT_SECRET as string,
+    async (err: any, decoded: any) => {
+      if (err) return null;
+
+      console.log("token", token);
+
+      let user;
+
+      try {
+        user = await photon.users.findOne({
+          where: {
+            id: decoded.id
+          }
+        });
+      } catch (e) {
+        throw new Error("User does not exist.");
+      }
+
+      console.log("user", user);
+
+      return user;
+    }
+  );
+};
+
 const server = new ApolloServer({
   schema,
-  context: { photon }
+  context: async ({ req }) => {
+    // get the user token from the headers
+    let token = req.headers.authorization || "";
+
+    let user = null;
+
+    if (token) {
+      if (token.startsWith("Bearer ")) {
+        // Remove Bearer from string
+        token = token.slice(7, token.length);
+      }
+
+      // try to retrieve a user with the token
+      user = await getUser(photon, token);
+    }
+
+    return { photon, user };
+  }
 });
 
 server.listen().then(({ url }) => {

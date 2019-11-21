@@ -47,12 +47,14 @@ export function withApollo(App, { ssr = true } = {}) {
     WithApollo.getInitialProps = async ctx => {
       const { AppTree } = ctx;
 
+      // TODO: correctly distinguis between ctx and ctx.ctx. Top level should be AppContext and sub level should be PageContext.
+
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
       const apolloClient = (ctx.apolloClient = initApolloClient(
         {},
         {
-          getToken: () => getToken(ctx.req)
+          getToken: () => getToken(ctx.ctx.req)
         }
       ));
 
@@ -116,7 +118,7 @@ function initApolloClient(initialState, { getToken }) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === "undefined") {
-    return createApolloClient(initialState, { getToken: () => undefined });
+    return createApolloClient(initialState, { getToken });
   }
 
   // Reuse client on the client-side
@@ -153,7 +155,8 @@ function createApolloClient(initialState = {}, { getToken }) {
   });
 
   const authLink = setContext((request, { headers }) => {
-    const token = getToken();
+    const token = getToken(request);
+
     return {
       headers: {
         ...headers,
