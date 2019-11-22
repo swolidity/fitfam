@@ -23,21 +23,19 @@ const getUser = async (photon: Photon, token: string) => {
     async (err: any, decoded: any) => {
       if (err) return null;
 
-      console.log("token", token);
-
       let user;
+
+      console.log("decoded", decoded);
 
       try {
         user = await photon.users.findOne({
           where: {
-            id: decoded.id
+            id: decoded.user_id
           }
         });
       } catch (e) {
         throw new Error("User does not exist.");
       }
-
-      console.log("user", user);
 
       return user;
     }

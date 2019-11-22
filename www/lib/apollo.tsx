@@ -155,7 +155,7 @@ function createApolloClient(initialState = {}, { getToken }) {
   });
 
   const authLink = setContext((request, { headers }) => {
-    const token = getToken(request);
+    const token = getToken();
 
     return {
       headers: {

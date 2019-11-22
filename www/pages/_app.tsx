@@ -15,11 +15,11 @@ class MyApp extends App<any> {
   }
 
   render() {
-    console.log("loggedInUser", this.props.loggedInUser);
-
     if (!this.props.loggedInUser) {
       return <div>logging in...</div>;
     }
+
+    console.log(this.props.loggedInUser);
 
     const { Component, pageProps } = this.props;
     return (
