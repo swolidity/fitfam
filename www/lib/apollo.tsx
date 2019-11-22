@@ -58,7 +58,7 @@ export function withApollo(App, { ssr = true } = {}) {
         }
       ));
 
-      const pageProps = App.getInitialProps
+      const appProps = App.getInitialProps
         ? await App.getInitialProps(ctx)
         : {};
 
@@ -75,12 +75,7 @@ export function withApollo(App, { ssr = true } = {}) {
             // Run all GraphQL queries
             const { getDataFromTree } = await import("@apollo/react-ssr");
             await getDataFromTree(
-              <AppTree
-                pageProps={{
-                  ...pageProps,
-                  apolloClient
-                }}
-              />
+              <AppTree {...appProps} apolloClient={apolloClient} />
             );
           } catch (error) {
             // Prevent Apollo Client GraphQL errors from crashing SSR.
@@ -99,7 +94,7 @@ export function withApollo(App, { ssr = true } = {}) {
       const apolloState = apolloClient.cache.extract();
 
       return {
-        ...pageProps,
+        ...appProps,
         apolloState
       };
     };

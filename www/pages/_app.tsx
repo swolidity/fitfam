@@ -15,16 +15,11 @@ class MyApp extends App<any> {
   }
 
   render() {
-    if (!this.props.loggedInUser) {
-      return <div>logging in...</div>;
-    }
-
-    console.log(this.props.loggedInUser);
-
     const { Component, pageProps } = this.props;
     return (
       <Layout>
         <h2>{this.props.loggedInUser.name}</h2>
+        <img src={this.props.loggedInUser.picture} />
         <Component {...pageProps} />
       </Layout>
     );
