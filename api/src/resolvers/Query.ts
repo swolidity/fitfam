@@ -5,6 +5,9 @@ export const Query = queryType({
     t.crud.user();
     t.crud.users();
 
+    t.crud.bodyweight();
+    t.crud.bodyweights();
+
     t.field("getLoggedInUser", {
       type: "User",
       nullable: true,

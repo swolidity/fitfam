@@ -18,8 +18,6 @@ class MyApp extends App<any> {
     const { Component, pageProps } = this.props;
     return (
       <Layout>
-        <h2>{this.props.loggedInUser.name}</h2>
-        <img src={this.props.loggedInUser.picture} />
         <Component {...pageProps} />
       </Layout>
     );
