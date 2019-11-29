@@ -4,7 +4,7 @@ const FacebookStrategy = require("passport-facebook").Strategy;
 const helmet = require("helmet");
 const app = express();
 const jwt = require("jsonwebtoken");
-import { Photon } from "@generated/photon";
+import { Photon } from "@prisma/photon";
 
 let cachePhoton: Photon | null = null;
 

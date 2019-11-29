@@ -1,5 +1,5 @@
 import { ApolloServer } from "apollo-server";
-import { Photon } from "@generated/photon";
+import { Photon } from "@prisma/photon";
 import { makeSchema } from "nexus";
 import { nexusPrismaPlugin } from "nexus-prisma";
 import * as types from "./resolvers";
@@ -24,8 +24,6 @@ const getUser = async (photon: Photon, token: string) => {
       if (err) return null;
 
       let user;
-
-      console.log("decoded", decoded);
 
       try {
         user = await photon.users.findOne({
