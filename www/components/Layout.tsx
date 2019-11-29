@@ -18,14 +18,14 @@ export default ({ children }) => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <Flex px={6} py={4} backgroundColor="#0D6CFF">
+    <Flex px={6} py={4} borderBottom="2px solid" borderColor="#f8f8f8">
       <Box>
         <NextLink href="/">
           <Link>
             <Image
-              src="/fitfam@2x.png"
+              src="/fitfam-blue@2x.png"
               alt="FitFam"
-              height="45px"
+              height="25px"
               ignoreFallback
             />
           </Link>
