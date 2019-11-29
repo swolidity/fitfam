@@ -5,11 +5,12 @@ import {
   Flex,
   Box,
   Link,
-  Image
+  Image,
+  Button
 } from "@chakra-ui/core";
 import NextLink from "next/link";
 
-export default ({ children }) => (
+export default ({ children, loggedInUser }) => (
   <ThemeProvider>
     <CSSReset />
 
@@ -18,7 +19,14 @@ export default ({ children }) => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <Flex px={6} py={4} borderBottom="2px solid" borderColor="#f8f8f8">
+    <Flex
+      px={6}
+      py={4}
+      borderBottom="2px solid"
+      borderColor="#f8f8f8"
+      align="center"
+      justify="space-between"
+    >
       <Box>
         <NextLink href="/">
           <Link>
@@ -31,6 +39,18 @@ export default ({ children }) => (
           </Link>
         </NextLink>
       </Box>
+
+      {loggedInUser ? (
+        <Image
+          src={loggedInUser.picture}
+          alt={loggedInUser.name}
+          height="35px"
+          rounded="full"
+          ignoreFallback
+        />
+      ) : (
+        <Button>Login</Button>
+      )}
     </Flex>
     {children}
   </ThemeProvider>

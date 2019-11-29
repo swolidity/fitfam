@@ -15,9 +15,9 @@ class MyApp extends App<any> {
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, loggedInUser } = this.props;
     return (
-      <Layout>
+      <Layout loggedInUser={loggedInUser}>
         <Component {...pageProps} />
       </Layout>
     );

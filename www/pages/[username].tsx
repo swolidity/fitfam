@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Flex, Box, Avatar, Text } from "@chakra-ui/core";
+import { Flex, Box, Image, Text } from "@chakra-ui/core";
 
 const GET_USER_PROFILE = gql`
   query userProfile($where: UserWhereUniqueInput!) {
@@ -28,13 +28,17 @@ const ProfilePage = () => {
   return (
     <Box p={6}>
       <Flex align="center">
-        <Avatar
+        <Image
           src={data.user.picture}
-          name={data.user.name}
+          alt={data.user.name}
+          height="80px"
           rounded="full"
           mr={4}
+          ignoreFallback
         />
-        <Text>{data.user.username}</Text>
+        <Text fontWeight="bold" fontSize="2xl">
+          {data.user.username}
+        </Text>
       </Flex>
     </Box>
   );
