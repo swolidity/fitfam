@@ -4,7 +4,7 @@
   "alias": "fitfam.me",
   "build": {
     "env": {
-      "MYSQL_URL": "@mysql-url"
+      "MYSQL_URL": "@fitfam-mysql-url"
     }
   },
   "builds": [
