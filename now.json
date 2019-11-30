@@ -2,9 +2,16 @@
   "version": 2,
   "name": "FitFam",
   "alias": "fitfam.me",
+  "env": {
+    "FACEBOOK_APP_ID": "@fitfam-facebook-app-id",
+    "FACEBOOK_APP_SECRET": "@fitfam-facebook-app-secret",
+    "JWT_SECRET": "@fitfam-jwt-secret"
+  },
   "build": {
     "env": {
-      "MYSQL_URL": "@fitfam-mysql-url"
+      "MYSQL_URL": "@fitfam-mysql-url",
+      "API_URL": "https://fitfam.me/api",
+      "GRAPHQL_API_URL": "https://fitfam.me/api/graphql"
     }
   },
   "builds": [
