@@ -8,6 +8,7 @@ export const User = objectType({
     t.model.name();
     t.model.username();
     t.model.picture();
+    t.model.bodyweights();
     t.model.createdAt();
     t.model.updatedAt();
   }

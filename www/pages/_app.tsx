@@ -3,6 +3,7 @@ import App from "next/app";
 import { withApollo } from "../lib/apollo";
 import Layout from "../components/Layout";
 import checkLoggedIn from "../lib/checkLoggedIn";
+import { LoggedInUserContext } from "../hooks/useLoggedInUser";
 
 class MyApp extends App<any> {
   static async getInitialProps(appContext) {
@@ -17,9 +18,11 @@ class MyApp extends App<any> {
   render() {
     const { Component, pageProps, loggedInUser } = this.props;
     return (
-      <Layout loggedInUser={loggedInUser}>
-        <Component {...pageProps} />
-      </Layout>
+      <LoggedInUserContext.Provider value={loggedInUser}>
+        <Layout loggedInUser={loggedInUser}>
+          <Component {...pageProps} />
+        </Layout>
+      </LoggedInUserContext.Provider>
     );
   }
 }

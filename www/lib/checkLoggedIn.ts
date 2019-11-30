@@ -8,6 +8,7 @@ export default apolloClient =>
           getLoggedInUser {
             id
             name
+            username
             email
             picture
           }
