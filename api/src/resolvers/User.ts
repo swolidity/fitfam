@@ -8,7 +8,9 @@ export const User = objectType({
     t.model.name();
     t.model.username();
     t.model.picture();
-    t.model.bodyweights();
+    t.model.bodyweights({
+      ordering: true
+    });
     t.model.createdAt();
     t.model.updatedAt();
   }

@@ -3,10 +3,16 @@ import { queryType } from "nexus";
 export const Query = queryType({
   definition(t) {
     t.crud.user();
-    t.crud.users();
+    t.crud.users({
+      type: "User",
+      ordering: true
+    });
 
-    t.crud.bodyweight();
-    t.crud.bodyweights();
+    t.crud.bodyweight({});
+    t.crud.bodyweights({
+      type: "Bodyweight",
+      ordering: true
+    });
 
     t.field("getLoggedInUser", {
       type: "User",
