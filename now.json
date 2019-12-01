@@ -3,6 +3,8 @@
   "name": "FitFam",
   "alias": "fitfam.me",
   "env": {
+    "API_URL": "@fitfam-api-url",
+    "GRAPHQL_API_URL": "@fitfam-graphql-api-url",
     "MYSQL_URL": "@fitfam-mysql-url",
     "FACEBOOK_APP_ID": "@fitfam-facebook-app-id",
     "FACEBOOK_APP_SECRET": "@fitfam-facebook-app-secret",
@@ -11,8 +13,8 @@
   "build": {
     "env": {
       "MYSQL_URL": "@fitfam-mysql-url",
-      "API_URL": "https://fitfam.me/api",
-      "GRAPHQL_API_URL": "https://fitfam.me/api/graphql"
+      "API_URL": "@fitfam-api-url",
+      "GRAPHQL_API_URL": "@fitfam-graphql-api-url"
     }
   },
   "builds": [
