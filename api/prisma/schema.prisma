@@ -4,7 +4,8 @@ datasource db {
 }
 
 generator photon {
-  provider = "photonjs"
+  provider      = "photonjs"
+  binaryTargets = ["rhel-openssl-1.0.x", "native"]
 }
 
 model User {
