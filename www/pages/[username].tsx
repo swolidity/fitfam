@@ -8,6 +8,7 @@ const GET_USER_PROFILE = gql`
       id
       name
       username
+      bio
       email
       picture
     }
@@ -40,6 +41,8 @@ const ProfilePage = () => {
           {data.user.username}
         </Text>
       </Flex>
+
+      <Text>{data.user.bio}</Text>
     </Box>
   );
 };
