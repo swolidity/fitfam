@@ -11,3 +11,6 @@
 20191129173152-user-bodyweights
 20191204101254-add-bio
 20191205135808-create-profile-songs-table
+20191205171520-make-exercise-name-unique
+20191205173057-add-exercise-slug
+20191205173157-make-exercise-slug-unique

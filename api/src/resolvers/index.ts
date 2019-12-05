@@ -4,3 +4,4 @@ export * from "./User";
 export * from "./Workout";
 export * from "./Bodyweight";
 export * from "./ProfileSong";
+export * from "./Exercise";

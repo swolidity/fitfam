@@ -7,5 +7,7 @@ export const Mutation = mutationType({
     });
 
     t.crud.createOneProfileSong();
+
+    t.crud.createOneExercise();
   }
 });
