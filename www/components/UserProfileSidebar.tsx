@@ -37,7 +37,7 @@ const UserProfileSidebar = ({ user }) => {
               <Text fontWeight="bold" fontSize="2xl">
                 {user.name}
               </Text>
-              <Text fontWeight="bold" fontSize="lg">
+              <Text fontSize="lg" color="#666">
                 @{user.username}
               </Text>
             </Box>
