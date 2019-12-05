@@ -54,7 +54,7 @@ const UserProfileSidebar = ({ user }) => {
       </Flex>
 
       <Link href={user.profile_songs[0].url} isExternal>
-        <Flex align="center" shadow="sm" borderRadius="5px" p={2}>
+        <Flex align="center" shadow="sm" borderRadius="5px" p={2} mb={3}>
           <Image
             src={user.profile_songs[0].thumbnail}
             alt={user.profile_songs[0].title}
