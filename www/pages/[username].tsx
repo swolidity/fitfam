@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { Flex, Box } from "@chakra-ui/core";
 import UserProfileSidebar from "../components/UserProfileSidebar";
+import BodyweightStat from "../components/BodyweightStat";
 
 const GET_USER_PROFILE = gql`
   query userProfile($where: UserWhereUniqueInput!) {
@@ -38,7 +39,9 @@ const ProfilePage = () => {
         <UserProfileSidebar user={data.user} />
       </Box>
 
-      <Box width={["100%", "75%"]}>Workouts</Box>
+      <Box width={["100%", "75%"]}>
+        <BodyweightStat user={data.user} />
+      </Box>
     </Flex>
   );
 };

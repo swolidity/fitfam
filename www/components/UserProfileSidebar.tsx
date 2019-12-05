@@ -46,21 +46,6 @@ const UserProfileSidebar = ({ user }) => {
       </Flex>
 
       <Text mb={3}>{user.bio}</Text>
-
-      <NextLink
-        href="/[username]/bodyweight"
-        as={`/${user.username}/bodyweight`}
-      >
-        <Link>
-          <Stat border="1px solid #ccc" borderRadius="5px" p={2}>
-            <StatLabel>Weight</StatLabel>
-            <StatNumber>{user.bodyweights[0].weight} lbs</StatNumber>
-            <StatHelpText>
-              {formatDistanceToNow(new Date(user.bodyweights[0].createdAt))} ago
-            </StatHelpText>
-          </Stat>
-        </Link>
-      </NextLink>
     </>
   );
 };
