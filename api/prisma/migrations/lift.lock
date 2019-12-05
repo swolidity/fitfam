@@ -14,3 +14,6 @@
 20191205171520-make-exercise-name-unique
 20191205173057-add-exercise-slug
 20191205173157-make-exercise-slug-unique
+20191205173408-add-workout-slug
+20191205180342-add-workout-relation-to-workout-logs
+20191205181243-add-user-to-workout-logs

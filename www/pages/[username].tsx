@@ -24,6 +24,12 @@ const GET_USER_PROFILE = gql`
         weight
         createdAt
       }
+      workouts {
+        id
+        title
+        slug
+        createdAt
+      }
     }
   }
 `;
@@ -46,7 +52,12 @@ const ProfilePage = () => {
       </Box>
 
       <Box width={["100%", "100%", "75%", "75%"]}>
-        <Heading size="md">Workouts</Heading>
+        <Heading size="md" mb={3}>
+          Workouts
+        </Heading>
+        {data.user.workouts.map(workout => (
+          <div key={workout.id}>{workout.title}</div>
+        ))}
       </Box>
     </Box>
   );

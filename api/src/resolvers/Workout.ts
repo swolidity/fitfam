@@ -5,6 +5,8 @@ export const Workout = objectType({
   definition(t) {
     t.model.id();
     t.model.title();
+    t.model.slug();
+    t.model.logs();
     t.model.createdAt();
     t.model.updatedAt();
   }

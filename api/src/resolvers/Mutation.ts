@@ -9,5 +9,7 @@ export const Mutation = mutationType({
     t.crud.createOneProfileSong();
 
     t.crud.createOneExercise();
+    t.crud.createOneWorkout();
+    t.crud.createOneWorkoutLog();
   }
 });

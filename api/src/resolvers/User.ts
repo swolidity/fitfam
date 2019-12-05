@@ -17,6 +17,10 @@ export const User = objectType({
       ordering: true,
       pagination: true
     });
+    t.model.workouts({
+      ordering: true,
+      pagination: true
+    });
     t.model.createdAt();
     t.model.updatedAt();
   }

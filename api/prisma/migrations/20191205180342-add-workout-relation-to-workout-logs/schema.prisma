@@ -1,6 +1,6 @@
 datasource db {
   provider = "mysql"
-  url      = env("MYSQL_URL")
+  url = "***"
 }
 
 generator photon {
@@ -34,7 +34,6 @@ model Workout {
 
 model WorkoutLog {
   id        String   @default(cuid()) @id @unique
-  user      User
   exercise  Exercise
   workout   Workout
   reps      Int
