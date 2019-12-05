@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server";
 import { Photon } from "@prisma/photon";
-import { makeSchema } from "nexus";
+import { makeSchema, fieldAuthorizePlugin } from "nexus";
 import { nexusPrismaPlugin } from "nexus-prisma";
 import * as types from "./resolvers";
 import jwt from "jsonwebtoken";
@@ -13,7 +13,7 @@ const nexusPrisma = nexusPrismaPlugin({
 
 const schema = makeSchema({
   types,
-  plugins: [nexusPrisma]
+  plugins: [nexusPrisma, fieldAuthorizePlugin()]
 });
 
 const getUser = async (photon: Photon, token: string) => {
