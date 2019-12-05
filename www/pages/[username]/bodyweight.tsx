@@ -18,6 +18,7 @@ import {
 import { useLoggedInUser } from "../../hooks/useLoggedInUser";
 import { useState } from "react";
 import UserProfileSidebar from "../../components/UserProfileSidebar";
+import { formatDistanceToNow } from "date-fns";
 
 const GET_USER_BODYWEIGHT = gql`
   query userProfile($where: UserWhereUniqueInput!) {
