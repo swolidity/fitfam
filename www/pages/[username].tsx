@@ -1,6 +1,18 @@
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Flex, Box, Image, Text } from "@chakra-ui/core";
+import {
+  Flex,
+  Box,
+  Image,
+  Text,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+  StatGroup
+} from "@chakra-ui/core";
+import { formatDistanceToNow } from "date-fns";
 
 const GET_USER_PROFILE = gql`
   query userProfile($where: UserWhereUniqueInput!) {
@@ -11,6 +23,11 @@ const GET_USER_PROFILE = gql`
       bio
       email
       picture
+      bodyweights(last: 1) {
+        id
+        weight
+        createdAt
+      }
     }
   }
 `;
@@ -43,6 +60,15 @@ const ProfilePage = () => {
       </Flex>
 
       <Text>{data.user.bio}</Text>
+
+      <Stat>
+        <StatLabel>Weight</StatLabel>
+        <StatNumber>{data.user.bodyweights[0].weight} lbs</StatNumber>
+        <StatHelpText>
+          {formatDistanceToNow(new Date(data.user.bodyweights[0].createdAt))}{" "}
+          ago
+        </StatHelpText>
+      </Stat>
     </Box>
   );
 };

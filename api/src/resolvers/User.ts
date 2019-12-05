@@ -10,7 +10,8 @@ export const User = objectType({
     t.model.bio();
     t.model.picture();
     t.model.bodyweights({
-      ordering: true
+      ordering: true,
+      pagination: true
     });
     t.model.createdAt();
     t.model.updatedAt();
