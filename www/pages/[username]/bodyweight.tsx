@@ -26,6 +26,7 @@ const GET_USER_BODYWEIGHT = gql`
       id
       name
       username
+      bio
       email
       picture
       bodyweights(orderBy: { createdAt: desc }) {
