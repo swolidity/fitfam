@@ -18,23 +18,31 @@ const UserProfileSidebar = ({ user }) => {
   return (
     <>
       <Flex align="center" mb={3}>
-        <Image
-          src={user.picture}
-          alt={user.name}
-          height="80px"
-          rounded="full"
-          mr={4}
-          ignoreFallback
-        />
+        <NextLink href="/[username]" as={`/${user.username}`}>
+          <Link>
+            <Image
+              src={user.picture}
+              alt={user.name}
+              height="80px"
+              rounded="full"
+              mr={4}
+              ignoreFallback
+            />
+          </Link>
+        </NextLink>
 
-        <Box>
-          <Text fontWeight="bold" fontSize="2xl">
-            {user.name}
-          </Text>
-          <Text fontWeight="bold" fontSize="lg">
-            @{user.username}
-          </Text>
-        </Box>
+        <NextLink href="/[username]" as={`/${user.username}`}>
+          <Link>
+            <Box>
+              <Text fontWeight="bold" fontSize="2xl">
+                {user.name}
+              </Text>
+              <Text fontWeight="bold" fontSize="lg">
+                @{user.username}
+              </Text>
+            </Box>
+          </Link>
+        </NextLink>
       </Flex>
 
       <Text mb={3}>{user.bio}</Text>
