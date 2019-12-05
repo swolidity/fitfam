@@ -142,7 +142,9 @@ const BodyweightPage = () => {
             <Stat key={bodyweight.id}>
               <StatLabel>Weight</StatLabel>
               <StatNumber>{bodyweight.weight} lbs</StatNumber>
-              <StatHelpText>{bodyweight.createdAt}</StatHelpText>
+              <StatHelpText>
+                {formatDistanceToNow(new Date(bodyweight.createdAt))} ago
+              </StatHelpText>
             </Stat>
           ))}
         </Stack>
