@@ -14,6 +14,13 @@ const GET_USER_PROFILE = gql`
       bio
       email
       picture
+      profile_songs(last: 1) {
+        id
+        artist
+        title
+        url
+        thumbnail
+      }
       bodyweights(last: 1) {
         id
         weight

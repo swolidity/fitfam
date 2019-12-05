@@ -13,6 +13,10 @@ export const User = objectType({
       ordering: true,
       pagination: true
     });
+    t.model.profile_songs({
+      ordering: true,
+      pagination: true
+    });
     t.model.createdAt();
     t.model.updatedAt();
   }

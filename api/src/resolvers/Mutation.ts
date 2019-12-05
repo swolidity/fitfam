@@ -5,5 +5,7 @@ export const Mutation = mutationType({
     t.crud.createOneBodyweight({
       authorize: () => false
     });
+
+    t.crud.createOneProfileSong();
   }
 });
