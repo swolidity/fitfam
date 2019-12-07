@@ -29,6 +29,16 @@ const GET_USER_PROFILE = gql`
         title
         slug
         createdAt
+        logs(orderBy: { createdAt: asc }) {
+          id
+          exercise {
+            id
+            name
+          }
+          weight
+          reps
+          createdAt
+        }
       }
     }
   }
@@ -56,7 +66,18 @@ const ProfilePage = () => {
           Workouts
         </Heading>
         {data.user.workouts.map(workout => (
-          <div key={workout.id}>{workout.title}</div>
+          <div key={workout.id}>
+            <div>{workout.title}</div>
+
+            {workout.logs.map(log => (
+              <div key={log.id}>
+                <div>{log.exercise.name}</div>
+                <div>
+                  {log.weight} lbs x {log.reps}
+                </div>
+              </div>
+            ))}
+          </div>
         ))}
       </Box>
     </Box>

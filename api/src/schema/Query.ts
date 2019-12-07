@@ -21,5 +21,7 @@ export const Query = queryType({
         return ctx.user;
       }
     });
+
+    t.crud.workout();
   }
 });
