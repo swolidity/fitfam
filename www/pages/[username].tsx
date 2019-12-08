@@ -1,7 +1,8 @@
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Flex, Box, Heading } from "@chakra-ui/core";
+import { Flex, Box, Heading, Link } from "@chakra-ui/core";
 import UserProfileSidebar from "../components/UserProfileSidebar";
+import NextLink from "next/link";
 
 const GET_USER_PROFILE = gql`
   query userProfile($where: UserWhereUniqueInput!) {
@@ -29,16 +30,6 @@ const GET_USER_PROFILE = gql`
         title
         slug
         createdAt
-        logs(orderBy: { createdAt: asc }) {
-          id
-          exercise {
-            id
-            name
-          }
-          weight
-          reps
-          createdAt
-        }
       }
     }
   }
@@ -67,16 +58,11 @@ const ProfilePage = () => {
         </Heading>
         {data.user.workouts.map(workout => (
           <div key={workout.id}>
-            <div>{workout.title}</div>
-
-            {workout.logs.map(log => (
-              <div key={log.id}>
-                <div>{log.exercise.name}</div>
-                <div>
-                  {log.weight} lbs x {log.reps}
-                </div>
-              </div>
-            ))}
+            <div>
+              <NextLink href="/w/[workout_id]" as={`/w/${workout.id}`}>
+                <Link>{workout.title}</Link>
+              </NextLink>
+            </div>
           </div>
         ))}
       </Box>
