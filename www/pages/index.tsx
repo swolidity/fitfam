@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import { Box } from "@chakra-ui/core";
 
 const GET_USERS = gql`
   query getUsers {
@@ -20,7 +21,7 @@ const Home = () => {
   if (error) return <div>{error.message}</div>;
 
   return (
-    <div>
+    <Box p={6}>
       {data.users.map(user => (
         <div key={user.id}>
           <Link href="/[username]" as={`/${user.username}`}>
@@ -28,7 +29,7 @@ const Home = () => {
           </Link>
         </div>
       ))}
-    </div>
+    </Box>
   );
 };
 

@@ -21,7 +21,7 @@ import UserProfileSidebar from "../../components/UserProfileSidebar";
 import { formatDistanceToNow } from "date-fns";
 
 const GET_USER_BODYWEIGHT = gql`
-  query userProfile($where: UserWhereUniqueInput!) {
+  query userProfileBodyweight($where: UserWhereUniqueInput!) {
     user(where: $where) {
       id
       name
