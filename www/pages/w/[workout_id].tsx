@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Flex, Box, Heading, Image, Text } from "@chakra-ui/core";
+import { Flex, Box, Heading, Image, Text, Link } from "@chakra-ui/core";
 import { formatDistanceToNow } from "date-fns";
+import NextLink from "next/link";
 
 const GET_WORKOUT = gql`
   query GET_WORKOUT($where: WorkoutWhereUniqueInput!) {
@@ -48,17 +49,25 @@ const WorkoutPage = () => {
       <Heading>{data.workout.title}</Heading>
 
       <Flex align="center" mb={4}>
-        <Image
-          src={data.workout.user.picture}
-          alt={data.workout.user.username}
-          ignoreFallback
-          rounded="full"
-          width="45px"
-          mr={3}
-        />
+        <NextLink href="/[username]" as={`/${data.workout.user.username}`}>
+          <Link>
+            <Image
+              src={data.workout.user.picture}
+              alt={data.workout.user.username}
+              ignoreFallback
+              rounded="full"
+              width="45px"
+              mr={3}
+            />
+          </Link>
+        </NextLink>
 
         <Box>
-          <Text fontWeight="semibold">{data.workout.user.username}</Text>
+          <NextLink href="/[username]" as={`/${data.workout.user.username}`}>
+            <Link>
+              <Text fontWeight="semibold">{data.workout.user.username}</Text>
+            </Link>
+          </NextLink>
           <Text>
             {formatDistanceToNow(new Date(data.workout.createdAt))} ago
           </Text>
