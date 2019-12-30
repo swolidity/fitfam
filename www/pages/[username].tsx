@@ -47,25 +47,8 @@ const ProfilePage = () => {
   if (loading) return <div>loading...</div>;
 
   return (
-    <Box p={6} display={{ md: "flex" }}>
-      <Box width={["100%", "100%", "25%", "25%"]} mr={6}>
-        <UserProfileSidebar user={data.user} />
-      </Box>
-
-      <Box width={["100%", "100%", "75%", "75%"]}>
-        <Heading size="md" mb={3}>
-          Workouts
-        </Heading>
-        {data.user.workouts.map(workout => (
-          <div key={workout.id}>
-            <div>
-              <NextLink href="/w/[workout_id]" as={`/w/${workout.id}`}>
-                <Link>{workout.title}</Link>
-              </NextLink>
-            </div>
-          </div>
-        ))}
-      </Box>
+    <Box p={6} margin="0 auto" maxWidth="600px">
+      <UserProfileSidebar user={data.user} />
     </Box>
   );
 };

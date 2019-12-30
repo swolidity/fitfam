@@ -1,8 +1,8 @@
 import React from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Box } from "@chakra-ui/core";
+import { Flex, Box, Image, Link } from "@chakra-ui/core";
 
 const GET_USERS = gql`
   query getUsers {
@@ -10,6 +10,7 @@ const GET_USERS = gql`
       id
       name
       username
+      picture
     }
   }
 `;
@@ -21,13 +22,23 @@ const Home = () => {
   if (error) return <div>{error.message}</div>;
 
   return (
-    <Box p={6}>
+    <Box p={6} margin="0 auto" maxWidth="600px">
       {data.users.map(user => (
-        <div key={user.id}>
-          <Link href="/[username]" as={`/${user.username}`}>
-            <a>{user.username}</a>
-          </Link>
-        </div>
+        <Flex key={user.id} align="center">
+          <NextLink href="/[username]" as={`/${user.username}`}>
+            <Image
+              src={user.picture}
+              alt={user.username}
+              rounded="full"
+              width="45px"
+              mr={3}
+            />
+          </NextLink>
+
+          <NextLink href="/[username]" as={`/${user.username}`}>
+            <Link fontWeight="semibold">{user.username}</Link>
+          </NextLink>
+        </Flex>
       ))}
     </Box>
   );

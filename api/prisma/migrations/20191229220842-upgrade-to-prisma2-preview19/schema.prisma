@@ -9,7 +9,7 @@ generator photon {
 }
 
 model User {
-  id            String        @default(cuid()) @id @unique
+  id            String        @default(cuid()) @id
   email         String        @unique
   name          String
   username      String        @unique
@@ -23,8 +23,9 @@ model User {
 }
 
 model Workout {
-  id        String       @default(cuid()) @id @unique
+  id        String       @default(cuid()) @id
   title     String
+  slug      String
   user      User
   logs      WorkoutLog[]
   createdAt DateTime     @default(now())
@@ -32,8 +33,10 @@ model Workout {
 }
 
 model WorkoutLog {
-  id        String   @default(cuid()) @id @unique
+  id        String   @default(cuid()) @id
+  user      User
   exercise  Exercise
+  workout   Workout
   reps      Int
   weight    Float
   createdAt DateTime @default(now())
@@ -41,14 +44,15 @@ model WorkoutLog {
 }
 
 model Exercise {
-  id        String   @default(cuid()) @id @unique
-  name      String
+  id        String   @default(cuid()) @id
+  name      String   @unique
+  slug      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Bodyweight {
-  id        String   @default(cuid()) @id @unique
+  id        String   @default(cuid()) @id
   weight    Float
   user      User
   createdAt DateTime @default(now())
@@ -56,7 +60,7 @@ model Bodyweight {
 }
 
 model ProfileSong {
-  id        String   @default(cuid()) @id @unique
+  id        String   @default(cuid()) @id
   user      User
   thumbnail String
   url       String

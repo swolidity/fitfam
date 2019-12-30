@@ -3,17 +3,4 @@
 # lift lockfile v1
 # Read more about conflict resolution here: TODO
 
-20191107214041-init
-20191107214207-add-timestamps-to-user
-20191118123024-fb-picture
-20191120152202-username
-20191122105923-make-username-unique
-20191129173152-user-bodyweights
-20191204101254-add-bio
-20191205135808-create-profile-songs-table
-20191205171520-make-exercise-name-unique
-20191205173057-add-exercise-slug
-20191205173157-make-exercise-slug-unique
-20191205173408-add-workout-slug
-20191205180342-add-workout-relation-to-workout-logs
-20191205181243-add-user-to-workout-logs
+20191229220842-upgrade-to-prisma2-preview19
