@@ -44,6 +44,8 @@ const ProfilePage = () => {
     }
   });
 
+  if (error) return <div>{error.message}</div>;
+
   if (loading) return <div>loading...</div>;
 
   return (

@@ -1,3 +1,4 @@
+import React from "react";
 import Head from "next/head";
 import {
   ThemeProvider,
@@ -10,7 +11,14 @@ import {
 } from "@chakra-ui/core";
 import NextLink from "next/link";
 
-export default ({ children, loggedInUser }) => (
+type LayoutProps = {
+  loggedInUser: any;
+};
+
+const Layout: React.FunctionComponent<LayoutProps> = ({
+  children,
+  loggedInUser
+}) => (
   <ThemeProvider>
     <CSSReset />
 
@@ -49,9 +57,13 @@ export default ({ children, loggedInUser }) => (
           ignoreFallback
         />
       ) : (
-        <Button>Login</Button>
+        <Button>
+          <Link href="/api/facebook-auth">Login</Link>
+        </Button>
       )}
     </Flex>
     {children}
   </ThemeProvider>
 );
+
+export default Layout;

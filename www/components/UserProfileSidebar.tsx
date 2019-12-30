@@ -47,27 +47,31 @@ const UserProfileSidebar = ({ user }) => {
 
       <Text mb={3}>{user.bio}</Text>
 
-      <Flex justify="space-between" mb={1}>
-        <Text fontSize="sm" color="#8998b1">
-          Profile Song
-        </Text>
-      </Flex>
+      {user.profile_songs[0] ? (
+        <>
+          <Flex justify="space-between" mb={1}>
+            <Text fontSize="sm" color="#8998b1">
+              Profile Song
+            </Text>
+          </Flex>
 
-      <Link href={user.profile_songs[0].url} isExternal>
-        <Flex align="center" shadow="sm" borderRadius="5px" p={2} mb={3}>
-          <Image
-            src={user.profile_songs[0].thumbnail}
-            alt={user.profile_songs[0].title}
-            width="45px"
-            mr={3}
-          />
+          <Link href={user.profile_songs[0].url} isExternal>
+            <Flex align="center" shadow="sm" borderRadius="5px" p={2} mb={3}>
+              <Image
+                src={user.profile_songs[0].thumbnail}
+                alt={user.profile_songs[0].title}
+                width="45px"
+                mr={3}
+              />
 
-          <Box>
-            <Text fontWeight="semibold">{user.profile_songs[0].title}</Text>
-            <Text color="#8998b1">{user.profile_songs[0].artist}</Text>
-          </Box>
-        </Flex>
-      </Link>
+              <Box>
+                <Text fontWeight="semibold">{user.profile_songs[0].title}</Text>
+                <Text color="#8998b1">{user.profile_songs[0].artist}</Text>
+              </Box>
+            </Flex>
+          </Link>
+        </>
+      ) : null}
     </>
   );
 };
