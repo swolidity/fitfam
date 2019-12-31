@@ -1,4 +1,5 @@
-import { queryType } from "nexus";
+import { queryType, stringArg } from "nexus";
+import { extract } from "oembed-parser";
 
 export const Query = queryType({
   definition(t) {
@@ -23,5 +24,17 @@ export const Query = queryType({
     });
 
     t.crud.workout();
+
+    t.field("oembed", {
+      type: "Oembed",
+      args: {
+        url: stringArg()
+      },
+      resolve: async (root, { url }, ctx) => {
+        const oembed = await extract(url);
+
+        return oembed;
+      }
+    });
   }
 });

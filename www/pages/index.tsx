@@ -32,6 +32,7 @@ const Home = () => {
               rounded="full"
               width="45px"
               mr={3}
+              fallbackSrc="false"
             />
           </NextLink>
 

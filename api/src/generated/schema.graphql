@@ -79,6 +79,7 @@ input ExerciseWhereUniqueInput {
 }
 
 type Mutation {
+  addProfileSong(url: String): ProfileSong!
   createOneBodyweight(data: BodyweightCreateInput!): Bodyweight!
   createOneExercise(data: ExerciseCreateInput!): Exercise!
   createOneProfileSong(data: ProfileSongCreateInput!): ProfileSong!
@@ -156,7 +157,7 @@ type Query {
 }
 
 type User {
-  bio: String!
+  bio: String
   bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
   createdAt: DateTime!
   email: String!
@@ -175,7 +176,7 @@ input UserCreateOneWithoutUserInput {
 }
 
 input UserCreateWithoutWorkoutLogsInput {
-  bio: String!
+  bio: String
   bodyweights: BodyweightCreateManyWithoutBodyweightsInput
   createdAt: DateTime
   email: String!
