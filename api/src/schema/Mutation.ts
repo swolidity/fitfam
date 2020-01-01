@@ -32,13 +32,32 @@ export const Mutation = mutationType({
             thumbnail: oembed.thumbnail_url,
             user: {
               connect: {
-                id: ctx.user.id
+                id: ctx.user?.id
               }
             }
           }
         });
 
         return profileSong;
+      }
+    });
+
+    t.field("editBio", {
+      type: "User",
+      args: {
+        bio: stringArg()
+      },
+      resolve: async (root, { bio }, ctx) => {
+        const user = ctx.photon.users.update({
+          where: {
+            id: ctx.user?.id
+          },
+          data: {
+            bio
+          }
+        });
+
+        return user;
       }
     });
   }

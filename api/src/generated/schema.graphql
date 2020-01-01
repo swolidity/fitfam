@@ -87,6 +87,23 @@ type Mutation {
   createOneWorkoutLog(data: WorkoutLogCreateInput!): WorkoutLog!
 }
 
+type Oembed {
+  author_name: String
+  author_url: String
+  cache_age: String
+  height: String
+  html: String
+  provider_name: String
+  provider_url: String
+  thumbnail_height: String
+  thumbnail_url: String
+  thumbnail_width: String
+  title: String!
+  type: String!
+  version: String!
+  width: String
+}
+
 enum OrderByArg {
   asc
   desc
@@ -151,6 +168,7 @@ type Query {
   bodyweight(where: BodyweightWhereUniqueInput!): Bodyweight
   bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
   getLoggedInUser: User
+  oembed(url: String): Oembed!
   user(where: UserWhereUniqueInput!): User
   users(after: ID, before: ID, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int): [User!]!
   workout(where: WorkoutWhereUniqueInput!): Workout

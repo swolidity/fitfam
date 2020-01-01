@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Flex,
   Box,
@@ -9,7 +10,8 @@ import {
   StatHelpText,
   StatArrow,
   StatGroup,
-  Link
+  Link,
+  Heading
 } from "@chakra-ui/core";
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
@@ -45,14 +47,18 @@ const UserProfileSidebar = ({ user }) => {
         </NextLink>
       </Flex>
 
-      <Text mb={3}>{user.bio}</Text>
+      <Heading fontSize="md" fontWeight="semibold" mb={2}>
+        Bio
+      </Heading>
+
+      <Text mb={5}>{user.bio}</Text>
 
       {user.profile_songs[0] ? (
         <>
           <Flex justify="space-between" mb={1}>
-            <Text fontSize="sm" color="#8998b1">
+            <Heading fontSize="md" fontWeight="semibold" mb={2}>
               Profile Song
-            </Text>
+            </Heading>
           </Flex>
 
           <Link href={user.profile_songs[0].url} isExternal>
