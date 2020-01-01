@@ -5,8 +5,20 @@ import { useMutation, useLazyQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 const ADD_PROFILE_SONG = gql`
-  mutation AddProfileSong($url: String!) {
-    addProfileSong(url: $url) {
+  mutation AddProfileSong(
+    $url: String!
+    $title: String!
+    $artist: String!
+    $provider: String!
+    $thumbnail: String!
+  ) {
+    addProfileSong(
+      url: $url
+      title: $title
+      artist: $artist
+      provider: $provider
+      thumbnail: $thumbnail
+    ) {
       id
     }
   }
@@ -18,6 +30,7 @@ const GET_OEMBED = gql`
       title
       author_name
       thumbnail_url
+      provider_name
     }
   }
 `;
@@ -51,13 +64,18 @@ const AddProfileSong: React.FC = () => {
   }, [oembedData]);
 
   const handleSubmit = useCallback(() => {
+    console.log(oembedData);
     addProfileSong({
       variables: {
-        url: fields.url?.value
+        url: fields.url?.value,
+        title: fields.title?.value,
+        artist: fields.artist?.value,
+        provider: oembedData.oembed?.provider_name,
+        thumbnail: oembedData.oembed?.thumbnail_url
       }
     });
     alert("Submitted!");
-  }, [fields]);
+  }, [fields, oembedData]);
 
   const handleURLChange = useCallback(async e => {
     loadOembed({

@@ -16,20 +16,24 @@ export const Mutation = mutationType({
     t.field("addProfileSong", {
       type: "ProfileSong",
       args: {
-        url: stringArg()
+        url: stringArg(),
+        title: stringArg(),
+        artist: stringArg(),
+        provider: stringArg(),
+        thumbnail: stringArg()
       },
-      resolve: async (root, { url }, ctx) => {
-        const oembed = await extract(url);
-
-        console.log("OEMBED", oembed);
-
+      resolve: async (
+        root,
+        { url, title, artist, provider, thumbnail },
+        ctx
+      ) => {
         const profileSong = await ctx.photon.profileSongs.create({
           data: {
-            url: url,
-            title: oembed.title,
-            artist: oembed.author_name,
-            provider: oembed.provider_name,
-            thumbnail: oembed.thumbnail_url,
+            url,
+            title,
+            artist,
+            provider: provider,
+            thumbnail: thumbnail,
             user: {
               connect: {
                 id: ctx.user?.id
