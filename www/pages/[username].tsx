@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { Flex, Box, Heading, Link } from "@chakra-ui/core";
-import UserProfileSidebar from "../components/UserProfileSidebar";
+import UserProfile from "../components/UserProfile";
 import NextLink from "next/link";
 
 const GET_USER_PROFILE = gql`
@@ -50,7 +50,7 @@ const ProfilePage = () => {
 
   return (
     <Box p={6} margin="0 auto" maxWidth="600px">
-      <UserProfileSidebar user={data.user} />
+      <UserProfile user={data.user} />
     </Box>
   );
 };

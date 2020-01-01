@@ -1,3 +1,4 @@
+import React from "react";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
@@ -17,7 +18,6 @@ import {
 } from "@chakra-ui/core";
 import { useLoggedInUser } from "../../hooks/useLoggedInUser";
 import { useState } from "react";
-import UserProfileSidebar from "../../components/UserProfileSidebar";
 import { formatDistanceToNow } from "date-fns";
 
 const GET_USER_BODYWEIGHT = gql`
@@ -97,59 +97,53 @@ const BodyweightPage = () => {
   if (loading) return <div>loading...</div>;
 
   return (
-    <Flex p={6}>
-      <Box width={["100%", "25%"]}>
-        <UserProfileSidebar user={data.user} />
-      </Box>
+    <Box p={6}>
+      {loggedInUser && loggedInUser.username === data.user.username ? (
+        <Flex>
+          <Input
+            placeholder="Weight"
+            width={"100px"}
+            mr={4}
+            onChange={e => setWeight(parseInt(e.target.value))}
+          />
+          <Button
+            mb={4}
+            onClick={e => {
+              e.preventDefault();
 
-      <Box width={["100%", "75%"]} px={6}>
-        {loggedInUser && loggedInUser.username === data.user.username ? (
-          <Flex>
-            <Input
-              placeholder="Weight"
-              width={"100px"}
-              mr={4}
-              onChange={e => setWeight(parseInt(e.target.value))}
-            />
-            <Button
-              mb={4}
-              onClick={e => {
-                e.preventDefault();
-
-                if (weight && weight > 0) {
-                  createBodyweight({
-                    variables: {
-                      data: {
-                        weight,
-                        user: {
-                          connect: {
-                            id: data.user.id
-                          }
+              if (weight && weight > 0) {
+                createBodyweight({
+                  variables: {
+                    data: {
+                      weight,
+                      user: {
+                        connect: {
+                          id: data.user.id
                         }
                       }
                     }
-                  });
-                }
-              }}
-            >
-              Add
-            </Button>
-          </Flex>
-        ) : null}
+                  }
+                });
+              }
+            }}
+          >
+            Add
+          </Button>
+        </Flex>
+      ) : null}
 
-        <Stack spacing={3}>
-          {data.user.bodyweights.map(bodyweight => (
-            <Stat key={bodyweight.id}>
-              <StatLabel>Weight</StatLabel>
-              <StatNumber>{bodyweight.weight} lbs</StatNumber>
-              <StatHelpText>
-                {formatDistanceToNow(new Date(bodyweight.createdAt))} ago
-              </StatHelpText>
-            </Stat>
-          ))}
-        </Stack>
-      </Box>
-    </Flex>
+      <Stack spacing={3}>
+        {data.user.bodyweights.map(bodyweight => (
+          <Stat key={bodyweight.id}>
+            <StatLabel>Weight</StatLabel>
+            <StatNumber>{bodyweight.weight} lbs</StatNumber>
+            <StatHelpText>
+              {formatDistanceToNow(new Date(bodyweight.createdAt))} ago
+            </StatHelpText>
+          </Stat>
+        ))}
+      </Stack>
+    </Box>
   );
 };
 

@@ -1,18 +1,5 @@
 import React from "react";
-import {
-  Flex,
-  Box,
-  Image,
-  Text,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-  StatGroup,
-  Link,
-  Heading
-} from "@chakra-ui/core";
+import { Flex, Box, Image, Text, Link, Heading, Badge } from "@chakra-ui/core";
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 
@@ -37,7 +24,7 @@ const UserProfileSidebar = ({ user }) => {
           <Link>
             <Box>
               <Text fontWeight="bold" fontSize="2xl">
-                {user.name}
+                {user.name} <Badge>#1</Badge>
               </Text>
               <Text fontSize="lg" color="#666">
                 @{user.username}
@@ -57,7 +44,7 @@ const UserProfileSidebar = ({ user }) => {
         <>
           <Flex justify="space-between" mb={1}>
             <Heading fontSize="md" fontWeight="semibold" mb={2}>
-              Profile Song
+              Pump Up Song
             </Heading>
           </Flex>
 
@@ -78,6 +65,12 @@ const UserProfileSidebar = ({ user }) => {
           </Link>
         </>
       ) : null}
+
+      <Heading fontSize="md" fontWeight="semibold" mb={2}>
+        Bodyweight
+      </Heading>
+
+      <Text mb={5}>{user.bodyweights[0].weight} lbs</Text>
     </>
   );
 };
