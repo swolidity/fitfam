@@ -49,13 +49,17 @@ const Layout: React.FunctionComponent<LayoutProps> = ({
       </Box>
 
       {loggedInUser ? (
-        <Image
-          src={loggedInUser.picture}
-          alt={loggedInUser.name}
-          height="35px"
-          rounded="full"
-          ignoreFallback
-        />
+        <NextLink href="/[username]" as={`/${loggedInUser.username}`}>
+          <Link>
+            <Image
+              src={loggedInUser.picture}
+              alt={loggedInUser.name}
+              height="35px"
+              rounded="full"
+              ignoreFallback
+            />
+          </Link>
+        </NextLink>
       ) : (
         <Button>
           <Link href="/api/facebook-auth">Login</Link>
