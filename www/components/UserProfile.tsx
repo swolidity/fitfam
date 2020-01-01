@@ -42,14 +42,14 @@ const UserProfileSidebar = ({ user }) => {
 
       {user.profile_songs[0] ? (
         <>
-          <Flex justify="space-between" mb={1}>
+          <Flex justify="space-between" mb={2}>
             <Heading fontSize="md" fontWeight="semibold" mb={2}>
               Pump Up Song
             </Heading>
           </Flex>
 
           <Link href={user.profile_songs[0].url} isExternal>
-            <Flex align="center" shadow="sm" borderRadius="5px" p={2} mb={3}>
+            <Flex align="center" shadow="sm" borderRadius="5px" p={2} mb={5}>
               <Image
                 src={user.profile_songs[0].thumbnail}
                 alt={user.profile_songs[0].title}
