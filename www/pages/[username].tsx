@@ -31,6 +31,7 @@ const GET_USER_PROFILE = gql`
         slug
         createdAt
       }
+      instagram
     }
   }
 `;

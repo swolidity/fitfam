@@ -21,6 +21,7 @@ export const User = objectType({
       ordering: true,
       pagination: true
     });
+    t.model.instagram();
     t.model.createdAt();
     t.model.updatedAt();
   }

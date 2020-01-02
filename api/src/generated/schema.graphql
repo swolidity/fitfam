@@ -79,12 +79,13 @@ input ExerciseWhereUniqueInput {
 }
 
 type Mutation {
-  addProfileSong(url: String): ProfileSong!
+  addProfileSong(artist: String, provider: String, thumbnail: String, title: String, url: String): ProfileSong!
   createOneBodyweight(data: BodyweightCreateInput!): Bodyweight!
   createOneExercise(data: ExerciseCreateInput!): Exercise!
   createOneProfileSong(data: ProfileSongCreateInput!): ProfileSong!
   createOneWorkout(data: WorkoutCreateInput!): Workout!
   createOneWorkoutLog(data: WorkoutLogCreateInput!): WorkoutLog!
+  editBio(bio: String): User!
 }
 
 type Oembed {
@@ -199,6 +200,7 @@ input UserCreateWithoutWorkoutLogsInput {
   createdAt: DateTime
   email: String!
   id: ID
+  instagram: String
   name: String!
   picture: String!
   profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
@@ -212,6 +214,7 @@ input UserOrderByInput {
   createdAt: OrderByArg
   email: OrderByArg
   id: OrderByArg
+  instagram: OrderByArg
   name: OrderByArg
   picture: OrderByArg
   updatedAt: OrderByArg

@@ -67,6 +67,16 @@ const UserProfileSidebar = ({ user }) => {
       ) : null}
 
       <Heading fontSize="md" fontWeight="semibold" mb={2}>
+        Instagram
+      </Heading>
+
+      <Text mb={5}>
+        <Link href={`https://instagram.com/${user.instagram}`}>
+          {user.instagram}
+        </Link>
+      </Text>
+
+      <Heading fontSize="md" fontWeight="semibold" mb={2}>
         Bodyweight
       </Heading>
 
