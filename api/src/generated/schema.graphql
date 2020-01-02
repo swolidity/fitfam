@@ -83,6 +83,7 @@ type Mutation {
   createOneBodyweight(data: BodyweightCreateInput!): Bodyweight!
   createOneExercise(data: ExerciseCreateInput!): Exercise!
   createOneProfileSong(data: ProfileSongCreateInput!): ProfileSong!
+  createOneSupplement(data: SupplementCreateInput!): Supplement!
   createOneWorkout(data: WorkoutCreateInput!): Workout!
   createOneWorkoutLog(data: WorkoutLogCreateInput!): WorkoutLog!
   editBio(bio: String): User!
@@ -175,12 +176,84 @@ type Query {
   workout(where: WorkoutWhereUniqueInput!): Workout
 }
 
+type Supplement {
+  added_by: User!
+  brand: String!
+  createdAt: DateTime!
+  id: ID!
+  image_url: String!
+  name: String!
+  updatedAt: DateTime!
+  url: String!
+}
+
+input SupplementCreateInput {
+  added_by: UserCreateOneWithoutAdded_byInput!
+  brand: String!
+  createdAt: DateTime
+  id: ID
+  image_url: String!
+  name: String!
+  supplmentStack: SupplmentStackCreateOneWithoutSupplmentStackInput
+  updatedAt: DateTime
+  url: String!
+}
+
+input SupplementCreateManyWithoutSupplementsInput {
+  connect: [SupplementWhereUniqueInput!]
+  create: [SupplementCreateWithoutAdded_byInput!]
+}
+
+input SupplementCreateWithoutAdded_byInput {
+  brand: String!
+  createdAt: DateTime
+  id: ID
+  image_url: String!
+  name: String!
+  supplmentStack: SupplmentStackCreateOneWithoutSupplmentStackInput
+  updatedAt: DateTime
+  url: String!
+}
+
+input SupplementWhereUniqueInput {
+  id: ID
+}
+
+input SupplmentStackCreateManyWithoutSupplmentStacksInput {
+  connect: [SupplmentStackWhereUniqueInput!]
+  create: [SupplmentStackCreateWithoutUserInput!]
+}
+
+input SupplmentStackCreateOneWithoutSupplmentStackInput {
+  connect: SupplmentStackWhereUniqueInput
+  create: SupplmentStackCreateWithoutSupplementsInput
+}
+
+input SupplmentStackCreateWithoutSupplementsInput {
+  createdAt: DateTime
+  id: ID
+  updatedAt: DateTime
+  user: UserCreateOneWithoutUserInput!
+}
+
+input SupplmentStackCreateWithoutUserInput {
+  createdAt: DateTime
+  id: ID
+  supplements: SupplementCreateManyWithoutSupplementsInput
+  updatedAt: DateTime
+}
+
+input SupplmentStackWhereUniqueInput {
+  id: ID
+}
+
 type User {
   bio: String
   bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
   createdAt: DateTime!
   email: String!
   id: ID!
+  instagram: String
   name: String!
   picture: String!
   profile_songs(after: ID, before: ID, first: Int, last: Int, orderBy: ProfileSongOrderByInput, skip: Int): [ProfileSong!]!
@@ -189,9 +262,31 @@ type User {
   workouts(after: ID, before: ID, first: Int, last: Int, orderBy: WorkoutOrderByInput, skip: Int): [Workout!]!
 }
 
+input UserCreateOneWithoutAdded_byInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutSupplementsInput
+}
+
 input UserCreateOneWithoutUserInput {
   connect: UserWhereUniqueInput
   create: UserCreateWithoutWorkoutLogsInput
+}
+
+input UserCreateWithoutSupplementsInput {
+  bio: String
+  bodyweights: BodyweightCreateManyWithoutBodyweightsInput
+  createdAt: DateTime
+  email: String!
+  id: ID
+  instagram: String
+  name: String!
+  picture: String!
+  profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
+  supplmentStacks: SupplmentStackCreateManyWithoutSupplmentStacksInput
+  updatedAt: DateTime
+  username: String!
+  workoutLogs: WorkoutLogCreateManyWithoutWorkoutLogsInput
+  workouts: WorkoutCreateManyWithoutWorkoutsInput
 }
 
 input UserCreateWithoutWorkoutLogsInput {
@@ -204,6 +299,8 @@ input UserCreateWithoutWorkoutLogsInput {
   name: String!
   picture: String!
   profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
+  supplements: SupplementCreateManyWithoutSupplementsInput
+  supplmentStacks: SupplmentStackCreateManyWithoutSupplmentStacksInput
   updatedAt: DateTime
   username: String!
   workouts: WorkoutCreateManyWithoutWorkoutsInput

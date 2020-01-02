@@ -10,6 +10,7 @@ import * as Bodyweight from "./Bodyweight";
 import * as ProfileSong from "./ProfileSong";
 import * as Exercise from "./Exercise";
 import * as Oembed from "./Oembed";
+import * as Supplement from "./Supplement";
 
 import * as path from "path";
 
@@ -23,7 +24,8 @@ export default Nexus.makeSchema({
     Bodyweight,
     ProfileSong,
     Exercise,
-    Oembed
+    Oembed,
+    Supplement
   ],
   plugins: [nexusPrismaPlugin(), Nexus.fieldAuthorizePlugin()],
   outputs: {

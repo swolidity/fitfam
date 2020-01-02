@@ -13,6 +13,8 @@ export const Mutation = mutationType({
     t.crud.createOneWorkout();
     t.crud.createOneWorkoutLog();
 
+    t.crud.createOneSupplement();
+
     t.field("addProfileSong", {
       type: "ProfileSong",
       args: {
