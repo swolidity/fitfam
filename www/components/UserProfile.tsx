@@ -71,7 +71,7 @@ const UserProfileSidebar = ({ user }) => {
       </Heading>
 
       <Text mb={5}>
-        <Link href={`https://instagram.com/${user.instagram}`}>
+        <Link href={`https://instagram.com/${user.instagram}`} color="#096cff">
           {user.instagram}
         </Link>
       </Text>
