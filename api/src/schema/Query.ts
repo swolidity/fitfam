@@ -25,6 +25,8 @@ export const Query = queryType({
 
     t.crud.workout();
 
+    t.crud.supplements();
+
     t.field("oembed", {
       type: "Oembed",
       args: {
