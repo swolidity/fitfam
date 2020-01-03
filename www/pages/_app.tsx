@@ -4,6 +4,7 @@ import { withApollo } from "../lib/apollo";
 import Layout from "../components/Layout";
 import checkLoggedIn from "../lib/checkLoggedIn";
 import { LoggedInUserContext } from "../hooks/useLoggedInUser";
+import ReactGA from "react-ga";
 
 class MyApp extends App<any> {
   static async getInitialProps(appContext) {
@@ -13,6 +14,11 @@ class MyApp extends App<any> {
     const loggedInUser = await checkLoggedIn(appContext.apolloClient);
 
     return { ...appProps, loggedInUser };
+  }
+
+  componentDidMount(): void {
+    ReactGA.initialize("UA-139695301-1");
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   render() {

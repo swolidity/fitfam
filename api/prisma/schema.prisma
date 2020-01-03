@@ -19,6 +19,8 @@ model User {
   bodyweights   Bodyweight[]
   profile_songs ProfileSong[]
   instagram     String?
+  date_of_birth DateTime
+  height        String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 }
