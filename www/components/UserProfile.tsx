@@ -24,7 +24,7 @@ const UserProfileSidebar = ({ user }) => {
           <Link>
             <Box>
               <Text fontWeight="bold" fontSize="2xl">
-                {user.name} <Badge>#1</Badge>
+                {user.name} <Badge as="span">#1</Badge>
               </Text>
               <Text fontSize="lg" color="#666">
                 @{user.username}
