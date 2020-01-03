@@ -10,6 +10,8 @@ import {
   Button
 } from "@chakra-ui/core";
 import NextLink from "next/link";
+import loggedInUserPicMenu from "../components/LoggedInUserPicMenu";
+import LoggedInUserPicMenu from "../components/LoggedInUserPicMenu";
 
 type LayoutProps = {
   loggedInUser: any;
@@ -49,17 +51,7 @@ const Layout: React.FunctionComponent<LayoutProps> = ({
       </Box>
 
       {loggedInUser ? (
-        <NextLink href="/[username]" as={`/${loggedInUser.username}`}>
-          <Link>
-            <Image
-              src={loggedInUser.picture}
-              alt={loggedInUser.name}
-              height="35px"
-              rounded="full"
-              ignoreFallback
-            />
-          </Link>
-        </NextLink>
+        <LoggedInUserPicMenu user={loggedInUser} />
       ) : (
         <Button>
           <Link href="/api/facebook-auth">Login</Link>
