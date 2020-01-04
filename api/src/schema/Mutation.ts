@@ -48,18 +48,24 @@ export const Mutation = mutationType({
       }
     });
 
-    t.field("editBio", {
+    t.field("editProfile", {
       type: "User",
       args: {
-        bio: stringArg()
+        bio: stringArg({
+          nullable: true
+        }),
+        instagram: stringArg({
+          nullable: true
+        })
       },
-      resolve: async (root, { bio }, ctx) => {
+      resolve: async (root, { bio, instagram }, ctx) => {
         const user = ctx.photon.users.update({
           where: {
             id: ctx.user?.id
           },
           data: {
-            bio
+            bio,
+            instagram
           }
         });
 

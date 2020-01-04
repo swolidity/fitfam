@@ -4,28 +4,39 @@ import { useField, useFormContext } from "fielder";
 import { useMutation, useLazyQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
-const EDIT_BIO = gql`
-  mutation EditBio($bio: String!) {
-    editBio(bio: $bio) {
+type UserEditProps = {
+  user: any;
+};
+
+const EDIT_PROFILE = gql`
+  mutation EditProfile($bio: String, $instagram: String) {
+    editProfile(bio: $bio, instagram: $instagram) {
       id
       bio
+      instagram
     }
   }
 `;
 
-const EditProfile: React.FC = () => {
-  const [editBio, { data }] = useMutation(EDIT_BIO);
+const EditProfile: React.FC<UserEditProps> = ({ user }) => {
+  const [editProfile, { data: mutationData }] = useMutation(EDIT_PROFILE);
 
   const { fields } = useFormContext();
   const [bioProps] = useField({
     name: "bio",
-    initialValue: ""
+    initialValue: user.bio ? user.bio : ""
+  });
+
+  const [instagramProps] = useField({
+    name: "instagram",
+    initialValue: user.instagram ? user.instagram : ""
   });
 
   const handleSubmit = useCallback(() => {
-    editBio({
+    editProfile({
       variables: {
-        bio: fields.bio.value
+        bio: fields.bio.value,
+        instagram: fields.instagram.value
       }
     });
   }, [fields]);
@@ -33,6 +44,7 @@ const EditProfile: React.FC = () => {
   return (
     <Box>
       <Input placeholder="Bio" mb={3} {...bioProps} />
+      <Input placeholder="Instagram" mb={3} {...instagramProps} />
 
       <Button onClick={handleSubmit}>Save</Button>
     </Box>

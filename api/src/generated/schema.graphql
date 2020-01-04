@@ -86,7 +86,7 @@ type Mutation {
   createOneSupplement(data: SupplementCreateInput!): Supplement!
   createOneWorkout(data: WorkoutCreateInput!): Workout!
   createOneWorkoutLog(data: WorkoutLogCreateInput!): WorkoutLog!
-  editBio(bio: String): User!
+  editProfile(bio: String, instagram: String): User!
 }
 
 type Oembed {
@@ -171,6 +171,7 @@ type Query {
   bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
   getLoggedInUser: User
   oembed(url: String): Oembed!
+  supplements(after: ID, before: ID, first: Int, last: Int, skip: Int): [Supplement!]!
   user(where: UserWhereUniqueInput!): User
   users(after: ID, before: ID, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int): [User!]!
   workout(where: WorkoutWhereUniqueInput!): Workout
@@ -194,7 +195,7 @@ input SupplementCreateInput {
   id: ID
   image_url: String!
   name: String!
-  supplmentStack: SupplmentStackCreateOneWithoutSupplmentStackInput
+  supplementStack: SupplementStackCreateOneWithoutSupplementStackInput
   updatedAt: DateTime
   url: String!
 }
@@ -210,40 +211,40 @@ input SupplementCreateWithoutAdded_byInput {
   id: ID
   image_url: String!
   name: String!
-  supplmentStack: SupplmentStackCreateOneWithoutSupplmentStackInput
+  supplementStack: SupplementStackCreateOneWithoutSupplementStackInput
   updatedAt: DateTime
   url: String!
 }
 
-input SupplementWhereUniqueInput {
-  id: ID
+input SupplementStackCreateManyWithoutSupplementStacksInput {
+  connect: [SupplementStackWhereUniqueInput!]
+  create: [SupplementStackCreateWithoutUserInput!]
 }
 
-input SupplmentStackCreateManyWithoutSupplmentStacksInput {
-  connect: [SupplmentStackWhereUniqueInput!]
-  create: [SupplmentStackCreateWithoutUserInput!]
+input SupplementStackCreateOneWithoutSupplementStackInput {
+  connect: SupplementStackWhereUniqueInput
+  create: SupplementStackCreateWithoutSupplementsInput
 }
 
-input SupplmentStackCreateOneWithoutSupplmentStackInput {
-  connect: SupplmentStackWhereUniqueInput
-  create: SupplmentStackCreateWithoutSupplementsInput
-}
-
-input SupplmentStackCreateWithoutSupplementsInput {
+input SupplementStackCreateWithoutSupplementsInput {
   createdAt: DateTime
   id: ID
   updatedAt: DateTime
   user: UserCreateOneWithoutUserInput!
 }
 
-input SupplmentStackCreateWithoutUserInput {
+input SupplementStackCreateWithoutUserInput {
   createdAt: DateTime
   id: ID
   supplements: SupplementCreateManyWithoutSupplementsInput
   updatedAt: DateTime
 }
 
-input SupplmentStackWhereUniqueInput {
+input SupplementStackWhereUniqueInput {
+  id: ID
+}
+
+input SupplementWhereUniqueInput {
   id: ID
 }
 
@@ -276,13 +277,15 @@ input UserCreateWithoutSupplementsInput {
   bio: String
   bodyweights: BodyweightCreateManyWithoutBodyweightsInput
   createdAt: DateTime
+  dateOfBirth: DateTime!
   email: String!
+  height: String
   id: ID
   instagram: String
   name: String!
   picture: String!
   profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
-  supplmentStacks: SupplmentStackCreateManyWithoutSupplmentStacksInput
+  supplementStacks: SupplementStackCreateManyWithoutSupplementStacksInput
   updatedAt: DateTime
   username: String!
   workoutLogs: WorkoutLogCreateManyWithoutWorkoutLogsInput
@@ -293,14 +296,16 @@ input UserCreateWithoutWorkoutLogsInput {
   bio: String
   bodyweights: BodyweightCreateManyWithoutBodyweightsInput
   createdAt: DateTime
+  dateOfBirth: DateTime!
   email: String!
+  height: String
   id: ID
   instagram: String
   name: String!
   picture: String!
   profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
   supplements: SupplementCreateManyWithoutSupplementsInput
-  supplmentStacks: SupplmentStackCreateManyWithoutSupplmentStacksInput
+  supplementStacks: SupplementStackCreateManyWithoutSupplementStacksInput
   updatedAt: DateTime
   username: String!
   workouts: WorkoutCreateManyWithoutWorkoutsInput
@@ -309,7 +314,9 @@ input UserCreateWithoutWorkoutLogsInput {
 input UserOrderByInput {
   bio: OrderByArg
   createdAt: OrderByArg
+  dateOfBirth: OrderByArg
   email: OrderByArg
+  height: OrderByArg
   id: OrderByArg
   instagram: OrderByArg
   name: OrderByArg
