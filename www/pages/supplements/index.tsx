@@ -1,7 +1,8 @@
 import React from "react";
-import { Flex, Box, Heading, Stack, Image, Text } from "@chakra-ui/core";
+import { Flex, Box, Heading, Stack, Image, Text, Link } from "@chakra-ui/core";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import NextLink from "next/link";
 
 const GET_SUPPLEMENTS = gql`
   query GetSupplements {
@@ -27,7 +28,9 @@ const SupplementsPage: React.FC = () => {
         {data.supplements.map(supplement => (
           <Flex align="center" key={supplement.id}>
             <Image src={supplement.image_url} ignoreFallback />
-            <Text>{supplement.name}</Text>
+            <Link isExternal href={supplement.url}>
+              <Text>{supplement.name}</Text>
+            </Link>
           </Flex>
         ))}
       </Stack>
