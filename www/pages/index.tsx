@@ -2,7 +2,7 @@ import React from "react";
 import NextLink from "next/link";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Flex, Box, Image, Link } from "@chakra-ui/core";
+import { Flex, Box, Image, Link, Spinner } from "@chakra-ui/core";
 
 const GET_USERS = gql`
   query getUsers {
@@ -18,7 +18,18 @@ const GET_USERS = gql`
 const Home = () => {
   const { loading, error, data } = useQuery(GET_USERS);
 
-  if (loading) return "loading...";
+  if (loading)
+    return (
+      <Box p={6}>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Box>
+    );
   if (error) return <div>{error.message}</div>;
 
   return (

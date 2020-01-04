@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Flex, Box, Heading, Link } from "@chakra-ui/core";
+import { Flex, Box, Heading, Link, Spinner } from "@chakra-ui/core";
 import UserProfile from "../components/UserProfile";
 import NextLink from "next/link";
 
@@ -47,7 +47,18 @@ const ProfilePage = () => {
 
   if (error) return <div>{error.message}</div>;
 
-  if (loading) return <div>loading...</div>;
+  if (loading)
+    return (
+      <Box p={6}>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Box>
+    );
 
   return (
     <Box p={6} margin="0 auto" maxWidth="600px">

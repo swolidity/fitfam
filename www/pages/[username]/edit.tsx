@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@chakra-ui/core";
+import { Box, Spinner } from "@chakra-ui/core";
 import EditProfile from "../../components/EditProfile";
 import { FielderProvider, useForm } from "fielder";
 import { useQuery } from "@apollo/react-hooks";
@@ -30,7 +30,18 @@ const EditPage: React.FC = () => {
 
   const state = useForm();
 
-  if (loading) return <Box p={6}>Loading...</Box>;
+  if (loading)
+    return (
+      <Box p={6}>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Box>
+    );
 
   return (
     <Box p={6}>
