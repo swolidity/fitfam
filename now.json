@@ -8,7 +8,9 @@
     "MYSQL_URL": "@fitfam-mysql-url",
     "FACEBOOK_APP_ID": "@fitfam-facebook-app-id",
     "FACEBOOK_APP_SECRET": "@fitfam-facebook-app-secret",
-    "JWT_SECRET": "@fitfam-jwt-secret"
+    "JWT_SECRET": "@fitfam-jwt-secret",
+    "AWS_S3_ACCESS_KEY_ID": "@fitfam-aws-s3-access-key-id",
+    "AWS_S3_SECRET_ACCESS_KEY": "@fitfam-aws-s3-secret-access-key"
   },
   "build": {
     "env": {

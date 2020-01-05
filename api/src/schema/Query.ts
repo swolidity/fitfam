@@ -1,5 +1,7 @@
-import { queryType, stringArg } from "nexus";
+import { queryType, stringArg, scalarType } from "nexus";
 import { extract } from "oembed-parser";
+import AWS from "aws-sdk";
+import uuid from "uuid";
 
 export const Query = queryType({
   definition(t) {
@@ -36,6 +38,43 @@ export const Query = queryType({
         const oembed = await extract(url);
 
         return oembed;
+      }
+    });
+
+    t.field("getPresignedUploadUrl", {
+      type: scalarType({
+        name: "PresignedUploadURL",
+        serialize(value) {
+          return value;
+        }
+      }),
+      args: {
+        directory: stringArg()
+      },
+      resolve: async (root, { directory }, ctx) => {
+        const key = `${directory}/${uuid.v4()}`;
+
+        const s3 = new AWS.S3({
+          accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+          region: "us-east-1"
+        });
+
+        let url;
+        try {
+          url = await s3.getSignedUrlPromise("putObject", {
+            Bucket: "fitfam-uploads",
+            Key: key,
+            ContentType: "image/*",
+            Expires: 300
+          });
+        } catch (e) {
+          console.log(e.message);
+        }
+
+        console.log("url", url);
+
+        return url;
       }
     });
   }

@@ -111,6 +111,8 @@ enum OrderByArg {
   desc
 }
 
+scalar PresignedUploadURL
+
 type ProfileSong {
   artist: String!
   createdAt: DateTime!
@@ -170,6 +172,7 @@ type Query {
   bodyweight(where: BodyweightWhereUniqueInput!): Bodyweight
   bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
   getLoggedInUser: User
+  getPresignedUploadUrl(directory: String): PresignedUploadURL!
   oembed(url: String): Oembed!
   supplements(after: ID, before: ID, first: Int, last: Int, skip: Int): [Supplement!]!
   user(where: UserWhereUniqueInput!): User
