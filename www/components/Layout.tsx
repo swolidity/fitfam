@@ -10,8 +10,9 @@ import {
   Button
 } from "@chakra-ui/core";
 import NextLink from "next/link";
-import loggedInUserPicMenu from "../components/LoggedInUserPicMenu";
 import LoggedInUserPicMenu from "../components/LoggedInUserPicMenu";
+import cookie from "cookie";
+import redirect from "../lib/redirect";
 
 type LayoutProps = {
   loggedInUser: any;
@@ -20,46 +21,61 @@ type LayoutProps = {
 const Layout: React.FunctionComponent<LayoutProps> = ({
   children,
   loggedInUser
-}) => (
-  <ThemeProvider>
-    <CSSReset />
+}) => {
+  const signout = () => {
+    document.cookie = cookie.serialize("token", "", {
+      maxAge: -1 // Expire the cookie immediately
+    });
 
-    <Head>
-      <title>FitFam - Home</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+    // Force a reload of all the current queries now that the user is
+    // logged in, so we don't accidentally leave any state around.
+    this.props.client.cache.reset().then(() => {
+      // Redirect to a more useful page when signed out
+      redirect({}, "/signin");
+    });
+  };
 
-    <Flex
-      px={6}
-      py={4}
-      borderBottom="2px solid"
-      borderColor="#f8f8f8"
-      align="center"
-      justify="space-between"
-    >
-      <Box>
-        <NextLink href="/">
-          <Link>
-            <Image
-              src="/fitfam-blue@2x.png"
-              alt="FitFam"
-              height="25px"
-              ignoreFallback
-            />
-          </Link>
-        </NextLink>
-      </Box>
+  return (
+    <ThemeProvider>
+      <CSSReset />
 
-      {loggedInUser ? (
-        <LoggedInUserPicMenu user={loggedInUser} />
-      ) : (
-        <Button>
-          <Link href="/api/facebook-auth">Login</Link>
-        </Button>
-      )}
-    </Flex>
-    {children}
-  </ThemeProvider>
-);
+      <Head>
+        <title>FitFam - Home</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Flex
+        px={6}
+        py={4}
+        borderBottom="2px solid"
+        borderColor="#f8f8f8"
+        align="center"
+        justify="space-between"
+      >
+        <Box>
+          <NextLink href="/">
+            <Link>
+              <Image
+                src="/fitfam-blue@2x.png"
+                alt="FitFam"
+                height="25px"
+                ignoreFallback
+              />
+            </Link>
+          </NextLink>
+        </Box>
+
+        {loggedInUser ? (
+          <LoggedInUserPicMenu user={loggedInUser} />
+        ) : (
+          <Button>
+            <Link href="/api/facebook-auth">Login</Link>
+          </Button>
+        )}
+      </Flex>
+      {children}
+    </ThemeProvider>
+  );
+};
 
 export default Layout;

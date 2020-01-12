@@ -66,6 +66,7 @@ export const Query = queryType({
             Bucket: "fitfam-uploads",
             Key: key,
             ContentType: "image/*",
+            ACL: "public-read",
             Expires: 300
           });
         } catch (e) {

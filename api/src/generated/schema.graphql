@@ -86,7 +86,7 @@ type Mutation {
   createOneSupplement(data: SupplementCreateInput!): Supplement!
   createOneWorkout(data: WorkoutCreateInput!): Workout!
   createOneWorkoutLog(data: WorkoutLogCreateInput!): WorkoutLog!
-  editProfile(bio: String, instagram: String): User!
+  editProfile(bio: String, instagram: String, picture: String): User!
 }
 
 type Oembed {
@@ -255,7 +255,9 @@ type User {
   bio: String
   bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
   createdAt: DateTime!
+  dateOfBirth: DateTime
   email: String!
+  height: String
   id: ID!
   instagram: String
   name: String!
@@ -280,7 +282,7 @@ input UserCreateWithoutSupplementsInput {
   bio: String
   bodyweights: BodyweightCreateManyWithoutBodyweightsInput
   createdAt: DateTime
-  dateOfBirth: DateTime!
+  dateOfBirth: DateTime
   email: String!
   height: String
   id: ID
@@ -299,7 +301,7 @@ input UserCreateWithoutWorkoutLogsInput {
   bio: String
   bodyweights: BodyweightCreateManyWithoutBodyweightsInput
   createdAt: DateTime
-  dateOfBirth: DateTime!
+  dateOfBirth: DateTime
   email: String!
   height: String
   id: ID

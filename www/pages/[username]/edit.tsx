@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Spinner } from "@chakra-ui/core";
+import { Box, Spinner, Heading } from "@chakra-ui/core";
 import EditProfile from "../../components/EditProfile";
 import { FielderProvider, useForm } from "fielder";
 import { useQuery } from "@apollo/react-hooks";
@@ -11,9 +11,11 @@ const GET_USER_EDIT = gql`
     user(where: $where) {
       id
       username
+      picture
       bio
       instagram
     }
+    getPresignedUploadUrl(directory: "andy")
   }
 `;
 
@@ -45,9 +47,12 @@ const EditPage: React.FC = () => {
 
   return (
     <Box p={6}>
-      Edit Profile
+      <Heading mb={6}>Edit Profile</Heading>
       <FielderProvider value={state}>
-        <EditProfile user={data.user} />
+        <EditProfile
+          user={data.user}
+          preSignedUploadUrl={data.getPresignedUploadUrl}
+        />
       </FielderProvider>
     </Box>
   );
