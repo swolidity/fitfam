@@ -38,12 +38,12 @@ const LoggedInUserPicMenu: React.FC<LoggedInUserPicMenuProps> = ({ user }) => {
       <MenuList>
         <MenuItem>
           <NextLink href="/[username]" as={`/${user.username}`}>
-            <Link>@{user.username}</Link>
+            <Link width="100%">@{user.username}</Link>
           </NextLink>
         </MenuItem>
         <MenuItem>
           <NextLink href="/[username]/edit" as={`/${user.username}/edit`}>
-            <Link>Edit Profile</Link>
+            <Link width="100%">Edit Profile</Link>
           </NextLink>
         </MenuItem>
       </MenuList>
