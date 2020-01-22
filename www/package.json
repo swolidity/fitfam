@@ -33,7 +33,8 @@
     "react": "16.11.0",
     "react-dom": "16.11.0",
     "react-dropzone": "^10.2.1",
-    "react-ga": "^2.7.0"
+    "react-ga": "^2.7.0",
+    "react-icons": "^3.8.0"
   },
   "devDependencies": {
     "@types/cookie": "^0.3.3",

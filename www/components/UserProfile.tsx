@@ -1,8 +1,8 @@
 import React from "react";
 import { Flex, Box, Image, Text, Link, Heading, Badge } from "@chakra-ui/core";
-import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
 import UserProfileTabs from "./UserProfileTabs";
+import { FaInstagram } from "react-icons/fa";
 
 const UserProfileSidebar = ({ user }) => {
   return (
@@ -67,16 +67,12 @@ const UserProfileSidebar = ({ user }) => {
           </>
         ) : null}
 
-        <Heading fontSize="md" fontWeight="semibold" mb={2}>
-          Instagram
-        </Heading>
-
         <Text mb={5}>
           <Link
             href={`https://instagram.com/${user.instagram}`}
             color="#096cff"
           >
-            {user.instagram}
+            <FaInstagram size="32px" />
           </Link>
         </Text>
       </Box>
