@@ -44,36 +44,39 @@ const Layout: React.FunctionComponent<LayoutProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Flex
-        px={6}
-        py={4}
-        borderBottom="2px solid"
-        borderColor="#f8f8f8"
-        align="center"
-        justify="space-between"
-      >
-        <Box>
-          <NextLink href="/">
-            <Link>
-              <Image
-                src="/fitfam-blue@2x.png"
-                alt="FitFam"
-                height="25px"
-                ignoreFallback
-              />
-            </Link>
-          </NextLink>
-        </Box>
+      <Box backgroundColor="#fafafa" height="100vh">
+        <Flex
+          px={6}
+          py={4}
+          borderBottom="2px solid"
+          borderColor="#f8f8f8"
+          align="center"
+          justify="space-between"
+          backgroundColor="white"
+        >
+          <Box>
+            <NextLink href="/">
+              <Link>
+                <Image
+                  src="/fitfam-blue@2x.png"
+                  alt="FitFam"
+                  height="25px"
+                  ignoreFallback
+                />
+              </Link>
+            </NextLink>
+          </Box>
 
-        {loggedInUser ? (
-          <LoggedInUserPicMenu user={loggedInUser} />
-        ) : (
-          <Button>
-            <Link href="/api/facebook-auth">Login</Link>
-          </Button>
-        )}
-      </Flex>
-      {children}
+          {loggedInUser ? (
+            <LoggedInUserPicMenu user={loggedInUser} />
+          ) : (
+            <Button>
+              <Link href="/api/facebook-auth">Login</Link>
+            </Button>
+          )}
+        </Flex>
+        <Box>{children}</Box>
+      </Box>
     </ThemeProvider>
   );
 };
