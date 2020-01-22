@@ -7,7 +7,7 @@ import { FaInstagram } from "react-icons/fa";
 const UserProfileSidebar = ({ user }) => {
   return (
     <Box display={{ md: "flex" }}>
-      <Box width={["100%", "100%", "30%"]}>
+      <Box width={["100%", "100%", "375px"]} flexShrink={0}>
         <Flex align="center" mb={3}>
           <NextLink href="/[username]" as={`/${user.username}`}>
             <Link>
@@ -78,7 +78,7 @@ const UserProfileSidebar = ({ user }) => {
       </Box>
 
       <Box
-        width={["100%", "100%", "70%"]}
+        width={["100%", "100%"]}
         backgroundColor="white"
         p={6}
         ml={{ md: 6 }}
