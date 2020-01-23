@@ -13,6 +13,7 @@ import NextLink from "next/link";
 import LoggedInUserPicMenu from "../components/LoggedInUserPicMenu";
 import cookie from "cookie";
 import redirect from "../lib/redirect";
+import { FaDiscord } from "react-icons/fa";
 
 type LayoutProps = {
   loggedInUser: any;
