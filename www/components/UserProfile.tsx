@@ -82,13 +82,20 @@ const UserProfileSidebar = ({ user }) => {
                 </Box>
 
                 <Box>
-                  <IconButton
-                    icon={FaEllipsisV}
-                    fontSize="18px"
-                    color="#8998b1"
-                    aria-label="more"
-                    variant="ghost"
-                  />
+                  <NextLink
+                    href="/[username]/profile_song"
+                    as={`/${user.username}/profile_song`}
+                  >
+                    <Link>
+                      <IconButton
+                        icon={FaEllipsisV}
+                        fontSize="18px"
+                        color="#8998b1"
+                        aria-label="more"
+                        variant="ghost"
+                      />
+                    </Link>
+                  </NextLink>
                 </Box>
               </Flex>
             </Link>
