@@ -56,7 +56,6 @@ const UserProfileSidebar = ({ user }) => {
                 align="center"
                 shadow="sm"
                 borderRadius="5px"
-                p={2}
                 mb={5}
                 backgroundColor="white"
                 justifyContent="space-between"
@@ -66,11 +65,12 @@ const UserProfileSidebar = ({ user }) => {
                     <Image
                       src={user.profile_songs[0].thumbnail}
                       alt={user.profile_songs[0].title}
-                      width="45px"
                       mr={3}
+                      maxWidth="70px"
+                      borderRadius="5px 0 0 5px"
                     />
 
-                    <Box>
+                    <Box p={2}>
                       <Text fontWeight="semibold">
                         {user.profile_songs[0].title}
                       </Text>
