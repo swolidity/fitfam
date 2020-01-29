@@ -24,6 +24,7 @@
     "apollo-link-http": "^1.5.16",
     "cookie": "^0.4.0",
     "date-fns": "^2.8.1",
+    "downshift": "^5.0.0-alpha.0",
     "emotion-theming": "^10.0.19",
     "fielder": "^1.0.3",
     "graphql": "^14.5.8",

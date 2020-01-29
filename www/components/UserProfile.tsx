@@ -10,7 +10,7 @@ import {
   IconButton
 } from "@chakra-ui/core";
 import NextLink from "next/link";
-import UserProfileTabs from "./UserProfileTabs";
+import Track from "./Track";
 import { FaInstagram, FaEllipsisV } from "react-icons/fa";
 
 const UserProfileSidebar = ({ user }) => {
@@ -51,7 +51,7 @@ const UserProfileSidebar = ({ user }) => {
 
         {user.profile_songs[0] ? (
           <>
-            <Link href={user.profile_songs[0].url} isExternal>
+            <Link href={user.profile_songs[0].url} isExternal as="div">
               <Flex
                 align="center"
                 shadow="sm"
@@ -114,12 +114,11 @@ const UserProfileSidebar = ({ user }) => {
 
       <Box
         width={["100%", "100%"]}
-        backgroundColor="white"
         p={6}
         ml={{ md: 6 }}
         display={{ md: "flex" }}
       >
-        <UserProfileTabs />
+        <Track />
       </Box>
     </Box>
   );
