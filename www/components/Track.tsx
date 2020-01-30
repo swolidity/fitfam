@@ -167,8 +167,7 @@ const Track: React.FC = () => {
               shadow="sm"
               borderRadius="5px"
             >
-              {exercise.name}
-
+              {exercise.name} x {exercise.sets.length}
               {exercise.sets.map((set, i) => (
                 <Box key={i} mb={3}>
                   <Input
@@ -199,7 +198,6 @@ const Track: React.FC = () => {
                   />
                 </Box>
               ))}
-
               <Button
                 onClick={() => {
                   dispatch({
