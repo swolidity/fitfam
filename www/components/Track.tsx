@@ -15,15 +15,33 @@ const TRACK_AUTOCOMPLETE = gql`
 
 const initialState = { volume: 0, exercises: {} };
 
+// TODO: normalize state. make flat
+
 function workoutReducer(state, action): any {
   switch (action.type) {
     case "addExercise":
-      console.log({ action });
       return {
         ...state,
         exercises: {
           ...state.exercises,
-          [action.payload.id]: { ...action.payload, weight: 0, reps: 1 }
+          [action.payload.id]: {
+            ...action.payload,
+            sets: [{ weight: 0, reps: 1 }]
+          }
+        }
+      };
+    case "addSet":
+      return {
+        ...state,
+        exercises: {
+          ...state.exercises,
+          [action.payload.id]: {
+            ...state.exercises[action.payload.id],
+            sets: [
+              ...state.exercises[action.payload.id].sets,
+              { weight: 0, reps: 1 }
+            ]
+          }
         }
       };
     case "weightChange":
@@ -39,20 +57,39 @@ function workoutReducer(state, action): any {
 
       let volume = 0;
 
-      console.log({ exercises });
-
       Object.keys(exercises).forEach(key => {
         const exercise = exercises[key];
 
         volume += exercise.weight * exercise.reps;
       });
 
-      console.log({ volume });
-
       return {
         ...state,
         exercises,
         volume
+      };
+
+    case "repChange":
+      const repExercises = {
+        ...state.exercises,
+        [action.payload.id]: {
+          ...state.exercises[action.payload.id],
+          reps: parseInt(action.payload.value)
+        }
+      };
+
+      let repVolume = 0;
+
+      Object.keys(repExercises).forEach(key => {
+        const exercise = repExercises[key];
+
+        repVolume += exercise.weight * exercise.reps;
+      });
+
+      return {
+        ...state,
+        exercises: repExercises,
+        volume: repVolume
       };
   }
 }
@@ -89,6 +126,7 @@ const Track: React.FC = () => {
   });
 
   console.log({ state });
+
   return (
     <Box width="100%">
       <Input placeholder="Track something" width="100%" {...getInputProps()} />
@@ -113,8 +151,11 @@ const Track: React.FC = () => {
         </ul>
       </Box>
 
+      <Input placeholder="Workout Name" />
+
+      <Heading mb={3}>Volume: {state.volume}</Heading>
+
       <Stack spacing={2}>
-        <Heading>Volume: {state.volume}</Heading>
         {Object.keys(state.exercises).map(key => {
           const exercise = state.exercises[key];
 
@@ -128,20 +169,49 @@ const Track: React.FC = () => {
             >
               {exercise.name}
 
-              <Input
-                placeholder="Weight"
-                name={`weight-${exercise.id}`}
-                onChange={e => {
+              {exercise.sets.map((set, i) => (
+                <Box key={i} mb={3}>
+                  <Input
+                    placeholder="Weight"
+                    name={`weight-${exercise.id}`}
+                    onChange={e => {
+                      dispatch({
+                        type: "weightChange",
+                        payload: {
+                          id: exercise.id,
+                          value: e.target.value
+                        }
+                      });
+                    }}
+                  />
+                  <Input
+                    placeholder="Reps"
+                    defaultValue={0}
+                    onChange={e => {
+                      dispatch({
+                        type: "repChange",
+                        payload: {
+                          id: exercise.id,
+                          value: e.target.value
+                        }
+                      });
+                    }}
+                  />
+                </Box>
+              ))}
+
+              <Button
+                onClick={() => {
                   dispatch({
-                    type: "weightChange",
+                    type: "addSet",
                     payload: {
-                      id: exercise.id,
-                      value: e.target.value
+                      id: exercise.id
                     }
                   });
                 }}
-              />
-              <Input placeholder="Reps" defaultValue={0} />
+              >
+                Add Set
+              </Button>
             </Box>
           );
         })}
