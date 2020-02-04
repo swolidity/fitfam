@@ -45,13 +45,23 @@ function workoutReducer(state, action): any {
         }
       };
     case "weightChange":
-      console.log(action.payload);
-
       const exercises = {
         ...state.exercises,
         [action.payload.id]: {
           ...state.exercises[action.payload.id],
-          weight: parseInt(action.payload.value)
+          sets: [
+            ...state.exercises[action.payload.id].sets.slice(
+              0,
+              action.payload.index
+            ),
+            {
+              ...state.exercises[action.payload.id].sets[action.payload.index],
+              weight: parseInt(action.payload.value)
+            },
+            ...state.exercises[action.payload.id].sets.slice(
+              action.payload.index + 1
+            )
+          ]
         }
       };
 
@@ -60,7 +70,14 @@ function workoutReducer(state, action): any {
       Object.keys(exercises).forEach(key => {
         const exercise = exercises[key];
 
-        volume += exercise.weight * exercise.reps;
+        const setVolume = exercise.sets.reduce((total, set) => {
+          const v = set.weight * set.reps;
+          return total + v;
+        }, 0);
+
+        volume += setVolume;
+
+        // volume += exercise.weight * exercise.reps;
       });
 
       return {
@@ -74,7 +91,19 @@ function workoutReducer(state, action): any {
         ...state.exercises,
         [action.payload.id]: {
           ...state.exercises[action.payload.id],
-          reps: parseInt(action.payload.value)
+          sets: [
+            ...state.exercises[action.payload.id].sets.slice(
+              0,
+              action.payload.index
+            ),
+            {
+              ...state.exercises[action.payload.id].sets[action.payload.index],
+              reps: parseInt(action.payload.value)
+            },
+            ...state.exercises[action.payload.id].sets.slice(
+              action.payload.index + 1
+            )
+          ]
         }
       };
 
@@ -83,7 +112,11 @@ function workoutReducer(state, action): any {
       Object.keys(repExercises).forEach(key => {
         const exercise = repExercises[key];
 
-        repVolume += exercise.weight * exercise.reps;
+        const newRepVolume = exercise.sets.reduce((total, set) => {
+          return total + set.weight * set.reps;
+        }, 0);
+
+        repVolume += newRepVolume;
       });
 
       return {
@@ -124,8 +157,6 @@ const Track: React.FC = () => {
     },
     itemToString: (item: { id: string; name: string }) => item.name
   });
-
-  console.log({ state });
 
   return (
     <Box width="100%">
@@ -178,7 +209,8 @@ const Track: React.FC = () => {
                         type: "weightChange",
                         payload: {
                           id: exercise.id,
-                          value: e.target.value
+                          value: e.target.value,
+                          index: i
                         }
                       });
                     }}
@@ -191,7 +223,8 @@ const Track: React.FC = () => {
                         type: "repChange",
                         payload: {
                           id: exercise.id,
-                          value: e.target.value
+                          value: e.target.value,
+                          index: i
                         }
                       });
                     }}
