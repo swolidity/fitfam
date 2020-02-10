@@ -45,7 +45,7 @@ const Layout: React.FunctionComponent<LayoutProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Box backgroundColor="#fafafa" height="100vh">
+      <Box height="100vh">
         <Flex
           px={6}
           py={4}
