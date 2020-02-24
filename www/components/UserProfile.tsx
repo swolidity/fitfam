@@ -44,20 +44,7 @@ const UserProfile = ({ user }) => {
         </Box>
       </Box>
 
-      <Box display={{ md: "flex" }}>
-        <Box width={["100%", "100%", "375px"]} flexShrink={0}>
-          <UserProfileSidebar user={user} />
-        </Box>
-
-        <Box
-          width={["100%", "100%"]}
-          px={6}
-          ml={{ md: 6 }}
-          display={{ md: "flex" }}
-        >
-          No workout data.
-        </Box>
-      </Box>
+      <UserProfileSidebar user={user} />
     </Box>
   );
 };

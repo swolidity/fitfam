@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import { Stack, Box, Button, Input, Heading } from "@chakra-ui/core";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useCombobox } from "downshift";
 
@@ -9,6 +9,14 @@ const TRACK_AUTOCOMPLETE = gql`
     onetrack(name: $name) {
       id
       name
+    }
+  }
+`;
+
+const SAVE_WORKOUT = gql`
+  mutation SaveWorkout($input: SaveWorkoutInput!) {
+    saveWorkout(input: $input) {
+      id
     }
   }
 `;
@@ -135,6 +143,8 @@ const Track: React.FC = () => {
   });
   const [state, dispatch] = useReducer(workoutReducer, initialState);
 
+  const [saveWorkout, { data: mutationData }] = useMutation(SAVE_WORKOUT, {});
+
   const {
     isOpen,
     selectedItem,
@@ -159,7 +169,7 @@ const Track: React.FC = () => {
   });
 
   return (
-    <Box width="100%">
+    <Box width="100%" p={6}>
       <Input placeholder="Track something" width="100%" {...getInputProps()} />
 
       <Box mb={5}>
@@ -247,6 +257,8 @@ const Track: React.FC = () => {
           );
         })}
       </Stack>
+
+      <Button>Save</Button>
     </Box>
   );
 };

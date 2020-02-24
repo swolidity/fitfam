@@ -30,6 +30,12 @@ input BodyweightCreateWithoutUserInput {
   weight: Float!
 }
 
+input BodyweightFilter {
+  every: BodyweightWhereInput
+  none: BodyweightWhereInput
+  some: BodyweightWhereInput
+}
+
 input BodyweightOrderByInput {
   createdAt: OrderByArg
   id: OrderByArg
@@ -37,11 +43,33 @@ input BodyweightOrderByInput {
   weight: OrderByArg
 }
 
+input BodyweightWhereInput {
+  AND: [BodyweightWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [BodyweightWhereInput!]
+  OR: [BodyweightWhereInput!]
+  updatedAt: DateTimeFilter
+  user: UserWhereInput
+  weight: FloatFilter
+}
+
 input BodyweightWhereUniqueInput {
   id: ID
 }
 
 scalar DateTime
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTime
+  notIn: [DateTime!]
+}
 
 type Exercise {
   createdAt: DateTime!
@@ -72,10 +100,44 @@ input ExerciseCreateWithoutWorkoutLogsInput {
   updatedAt: DateTime
 }
 
+input ExerciseWhereInput {
+  AND: [ExerciseWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  name: StringFilter
+  NOT: [ExerciseWhereInput!]
+  OR: [ExerciseWhereInput!]
+  slug: StringFilter
+  updatedAt: DateTimeFilter
+  workoutLogs: WorkoutLogFilter
+}
+
 input ExerciseWhereUniqueInput {
   id: ID
   name: String
   slug: String
+}
+
+input FloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: Float
+  notIn: [Float!]
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
 }
 
 type Mutation {
@@ -87,6 +149,32 @@ type Mutation {
   createOneWorkout(data: WorkoutCreateInput!): Workout!
   createOneWorkoutLog(data: WorkoutLogCreateInput!): WorkoutLog!
   editProfile(bio: String, instagram: String, picture: String): User!
+  saveWorkout(input: SaveWorkoutInput): Workout!
+}
+
+input NullableDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTime
+  notIn: [DateTime!]
+}
+
+input NullableStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 type Oembed {
@@ -153,6 +241,12 @@ input ProfileSongCreateWithoutUserInput {
   url: String!
 }
 
+input ProfileSongFilter {
+  every: ProfileSongWhereInput
+  none: ProfileSongWhereInput
+  some: ProfileSongWhereInput
+}
+
 input ProfileSongOrderByInput {
   artist: OrderByArg
   createdAt: OrderByArg
@@ -164,6 +258,21 @@ input ProfileSongOrderByInput {
   url: OrderByArg
 }
 
+input ProfileSongWhereInput {
+  AND: [ProfileSongWhereInput!]
+  artist: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [ProfileSongWhereInput!]
+  OR: [ProfileSongWhereInput!]
+  provider: StringFilter
+  thumbnail: StringFilter
+  title: StringFilter
+  updatedAt: DateTimeFilter
+  url: StringFilter
+  user: UserWhereInput
+}
+
 input ProfileSongWhereUniqueInput {
   id: ID
 }
@@ -171,13 +280,35 @@ input ProfileSongWhereUniqueInput {
 type Query {
   bodyweight(where: BodyweightWhereUniqueInput!): Bodyweight
   bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
+  exercise(where: ExerciseWhereUniqueInput!): Exercise
+  exercises(after: ID, before: ID, first: Int, last: Int, skip: Int, where: ExerciseWhereInput): [Exercise!]!
   getLoggedInUser: User
   getPresignedUploadUrl(directory: String): PresignedUploadURL!
   oembed(url: String): Oembed!
+  onetrack(name: String): [Exercise!]!
   supplements(after: ID, before: ID, first: Int, last: Int, skip: Int): [Supplement!]!
   user(where: UserWhereUniqueInput!): User
   users(after: ID, before: ID, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int): [User!]!
   workout(where: WorkoutWhereUniqueInput!): Workout
+}
+
+input SaveWorkoutInput {
+  exercises: [WorkoutExerciseInput!]
+  title: String!
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 type Supplement {
@@ -219,6 +350,12 @@ input SupplementCreateWithoutAdded_byInput {
   url: String!
 }
 
+input SupplementFilter {
+  every: SupplementWhereInput
+  none: SupplementWhereInput
+  some: SupplementWhereInput
+}
+
 input SupplementStackCreateManyWithoutSupplementStacksInput {
   connect: [SupplementStackWhereUniqueInput!]
   create: [SupplementStackCreateWithoutUserInput!]
@@ -243,8 +380,40 @@ input SupplementStackCreateWithoutUserInput {
   updatedAt: DateTime
 }
 
+input SupplementStackFilter {
+  every: SupplementStackWhereInput
+  none: SupplementStackWhereInput
+  some: SupplementStackWhereInput
+}
+
+input SupplementStackWhereInput {
+  AND: [SupplementStackWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [SupplementStackWhereInput!]
+  OR: [SupplementStackWhereInput!]
+  supplements: SupplementFilter
+  updatedAt: DateTimeFilter
+  user: UserWhereInput
+}
+
 input SupplementStackWhereUniqueInput {
   id: ID
+}
+
+input SupplementWhereInput {
+  added_by: UserWhereInput
+  AND: [SupplementWhereInput!]
+  brand: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  image_url: StringFilter
+  name: StringFilter
+  NOT: [SupplementWhereInput!]
+  OR: [SupplementWhereInput!]
+  supplementStack: SupplementStackWhereInput
+  updatedAt: DateTimeFilter
+  url: StringFilter
 }
 
 input SupplementWhereUniqueInput {
@@ -330,6 +499,29 @@ input UserOrderByInput {
   username: OrderByArg
 }
 
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  bio: NullableStringFilter
+  bodyweights: BodyweightFilter
+  createdAt: DateTimeFilter
+  dateOfBirth: NullableDateTimeFilter
+  email: StringFilter
+  height: NullableStringFilter
+  id: StringFilter
+  instagram: NullableStringFilter
+  name: StringFilter
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  picture: StringFilter
+  profile_songs: ProfileSongFilter
+  supplements: SupplementFilter
+  supplementStacks: SupplementStackFilter
+  updatedAt: DateTimeFilter
+  username: StringFilter
+  workoutLogs: WorkoutLogFilter
+  workouts: WorkoutFilter
+}
+
 input UserWhereUniqueInput {
   email: String
   id: ID
@@ -384,6 +576,17 @@ input WorkoutCreateWithoutUserInput {
   updatedAt: DateTime
 }
 
+input WorkoutExerciseInput {
+  reps: Int
+  weight: Float
+}
+
+input WorkoutFilter {
+  every: WorkoutWhereInput
+  none: WorkoutWhereInput
+  some: WorkoutWhereInput
+}
+
 type WorkoutLog {
   createdAt: DateTime!
   exercise: Exercise!
@@ -436,12 +639,32 @@ input WorkoutLogCreateWithoutWorkoutInput {
   weight: Float!
 }
 
+input WorkoutLogFilter {
+  every: WorkoutLogWhereInput
+  none: WorkoutLogWhereInput
+  some: WorkoutLogWhereInput
+}
+
 input WorkoutLogOrderByInput {
   createdAt: OrderByArg
   id: OrderByArg
   reps: OrderByArg
   updatedAt: OrderByArg
   weight: OrderByArg
+}
+
+input WorkoutLogWhereInput {
+  AND: [WorkoutLogWhereInput!]
+  createdAt: DateTimeFilter
+  exercise: ExerciseWhereInput
+  id: StringFilter
+  NOT: [WorkoutLogWhereInput!]
+  OR: [WorkoutLogWhereInput!]
+  reps: IntFilter
+  updatedAt: DateTimeFilter
+  user: UserWhereInput
+  weight: FloatFilter
+  workout: WorkoutWhereInput
 }
 
 input WorkoutLogWhereUniqueInput {
@@ -454,6 +677,19 @@ input WorkoutOrderByInput {
   slug: OrderByArg
   title: OrderByArg
   updatedAt: OrderByArg
+}
+
+input WorkoutWhereInput {
+  AND: [WorkoutWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  logs: WorkoutLogFilter
+  NOT: [WorkoutWhereInput!]
+  OR: [WorkoutWhereInput!]
+  slug: StringFilter
+  title: StringFilter
+  updatedAt: DateTimeFilter
+  user: UserWhereInput
 }
 
 input WorkoutWhereUniqueInput {

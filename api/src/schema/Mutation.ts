@@ -1,5 +1,6 @@
-import { mutationType, stringArg } from "nexus";
+import { mutationType, stringArg, arg } from "nexus";
 import { extract } from "oembed-parser";
+import slug from "slug";
 
 export const Mutation = mutationType({
   definition(t) {
@@ -74,6 +75,28 @@ export const Mutation = mutationType({
         });
 
         return user;
+      }
+    });
+
+    t.field("saveWorkout", {
+      type: "Workout",
+      args: {
+        input: "SaveWorkoutInput"
+      },
+      resolve: async (root, { input }, ctx) => {
+        const workout = await ctx.photon.workouts.create({
+          data: {
+            title: input.title,
+            slug: slug(input.title),
+            user: {
+              connect: {
+                id: ctx.user.id
+              }
+            }
+          }
+        });
+
+        return workout;
       }
     });
   }
