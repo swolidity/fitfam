@@ -11,6 +11,7 @@ import * as ProfileSong from "./ProfileSong";
 import * as Exercise from "./Exercise";
 import * as Oembed from "./Oembed";
 import * as Supplement from "./Supplement";
+import * as SupplementStack from "./SupplementStack";
 
 import * as path from "path";
 
@@ -25,7 +26,8 @@ export default Nexus.makeSchema({
     ProfileSong,
     Exercise,
     Oembed,
-    Supplement
+    Supplement,
+    SupplementStack
   ],
   plugins: [nexusPrismaPlugin(), Nexus.fieldAuthorizePlugin()],
   outputs: {

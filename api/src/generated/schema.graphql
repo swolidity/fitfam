@@ -336,16 +336,16 @@ input SupplementCreateInput {
 
 input SupplementCreateManyWithoutSupplementsInput {
   connect: [SupplementWhereUniqueInput!]
-  create: [SupplementCreateWithoutAdded_byInput!]
+  create: [SupplementCreateWithoutSupplementStackInput!]
 }
 
-input SupplementCreateWithoutAdded_byInput {
+input SupplementCreateWithoutSupplementStackInput {
+  added_by: UserCreateOneWithoutAdded_byInput!
   brand: String!
   createdAt: DateTime
   id: ID
   image_url: String!
   name: String!
-  supplementStack: SupplementStackCreateOneWithoutSupplementStackInput
   updatedAt: DateTime
   url: String!
 }
@@ -356,7 +356,15 @@ input SupplementFilter {
   some: SupplementWhereInput
 }
 
-input SupplementStackCreateManyWithoutSupplementStacksInput {
+type SupplementStack {
+  createdAt: DateTime!
+  id: ID!
+  supplements(after: ID, before: ID, first: Int, last: Int, skip: Int): [Supplement!]!
+  updatedAt: DateTime!
+  user: User!
+}
+
+input SupplementStackCreateManyWithoutSupplement_stackInput {
   connect: [SupplementStackWhereUniqueInput!]
   create: [SupplementStackCreateWithoutUserInput!]
 }
@@ -432,6 +440,7 @@ type User {
   name: String!
   picture: String!
   profile_songs(after: ID, before: ID, first: Int, last: Int, orderBy: ProfileSongOrderByInput, skip: Int): [ProfileSong!]!
+  supplement_stack(after: ID, before: ID, first: Int, last: Int, skip: Int): [SupplementStack!]!
   updatedAt: DateTime!
   username: String!
   workouts(after: ID, before: ID, first: Int, last: Int, orderBy: WorkoutOrderByInput, skip: Int): [Workout!]!
@@ -459,7 +468,7 @@ input UserCreateWithoutSupplementsInput {
   name: String!
   picture: String!
   profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
-  supplementStacks: SupplementStackCreateManyWithoutSupplementStacksInput
+  supplement_stack: SupplementStackCreateManyWithoutSupplement_stackInput
   updatedAt: DateTime
   username: String!
   workoutLogs: WorkoutLogCreateManyWithoutWorkoutLogsInput
@@ -478,8 +487,8 @@ input UserCreateWithoutWorkoutLogsInput {
   name: String!
   picture: String!
   profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
+  supplement_stack: SupplementStackCreateManyWithoutSupplement_stackInput
   supplements: SupplementCreateManyWithoutSupplementsInput
-  supplementStacks: SupplementStackCreateManyWithoutSupplementStacksInput
   updatedAt: DateTime
   username: String!
   workouts: WorkoutCreateManyWithoutWorkoutsInput
@@ -514,8 +523,8 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   picture: StringFilter
   profile_songs: ProfileSongFilter
+  supplement_stack: SupplementStackFilter
   supplements: SupplementFilter
-  supplementStacks: SupplementStackFilter
   updatedAt: DateTimeFilter
   username: StringFilter
   workoutLogs: WorkoutLogFilter

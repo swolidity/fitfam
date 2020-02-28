@@ -21,6 +21,7 @@ export const User = objectType({
       ordering: true,
       pagination: true
     });
+    t.model.supplement_stack();
     t.model.instagram();
     t.model.height();
     t.model.dateOfBirth();
