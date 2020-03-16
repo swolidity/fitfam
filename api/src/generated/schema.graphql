@@ -293,8 +293,9 @@ type Query {
 }
 
 input SaveWorkoutInput {
-  exercises: [WorkoutExerciseInput!]
+  exercises: [WorkoutExerciseInput!]!
   title: String!
+  volume: Int
 }
 
 input StringFilter {
@@ -586,8 +587,9 @@ input WorkoutCreateWithoutUserInput {
 }
 
 input WorkoutExerciseInput {
-  reps: Int
-  weight: Float
+  id: ID
+  name: String
+  sets: [WorkoutSetsInput!]!
 }
 
 input WorkoutFilter {
@@ -686,6 +688,11 @@ input WorkoutOrderByInput {
   slug: OrderByArg
   title: OrderByArg
   updatedAt: OrderByArg
+}
+
+input WorkoutSetsInput {
+  reps: Int!
+  weight: Float!
 }
 
 input WorkoutWhereInput {

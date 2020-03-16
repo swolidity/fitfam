@@ -96,6 +96,32 @@ export const Mutation = mutationType({
           }
         });
 
+        for (const exercise of input?.exercises) {
+          for (const set of exercise.sets) {
+            const log = await ctx.photon.workoutLogs.create({
+              data: {
+                exercise: {
+                  connect: {
+                    id: exercise.id
+                  }
+                },
+                workout: {
+                  connect: {
+                    id: workout.id
+                  }
+                },
+                user: {
+                  connect: {
+                    id: ctx.user.id
+                  }
+                },
+                weight: set.weight,
+                reps: set.reps
+              }
+            });
+          }
+        }
+
         return workout;
       }
     });

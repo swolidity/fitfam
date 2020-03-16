@@ -5,8 +5,8 @@ import UserProfileSidebar from "./UserProfileSidebar";
 
 const UserProfile = ({ user }) => {
   return (
-    <Box p={6}>
-      <Box>
+    <Box display={{ md: "flex" }} p={6}>
+      <Box width={["100%", "100%", "375px"]} flexShrink={0}>
         <Box mb={6}>
           <Flex align="center" mb={4}>
             <NextLink href="/[username]" as={`/${user.username}`}>
@@ -42,9 +42,26 @@ const UserProfile = ({ user }) => {
 
           <Text>{user.bio}</Text>
         </Box>
+
+        <UserProfileSidebar user={user} />
       </Box>
 
-      <UserProfileSidebar user={user} />
+      <Box
+        width={["100%", "100%"]}
+        p={6}
+        ml={{ md: 6 }}
+        display={{ md: "flex" }}
+      >
+        {user.workouts.map(workout => {
+          return (
+            <Box key={workout.id}>
+              <NextLink href="/w/[workout_id]" as={`/w/${workout.id}`}>
+                <Link>{workout.title}</Link>
+              </NextLink>
+            </Box>
+          );
+        })}
+      </Box>
     </Box>
   );
 };

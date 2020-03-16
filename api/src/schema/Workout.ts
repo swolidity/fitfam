@@ -15,11 +15,25 @@ export const Workout = objectType({
   }
 });
 
+export const WorkoutSetsInput = inputObjectType({
+  name: "WorkoutSetsInput",
+  definition(t) {
+    t.float("weight", {
+      required: true
+    });
+    t.int("reps", { required: true });
+  }
+});
+
 export const WorkoutExerciseInput = inputObjectType({
   name: "WorkoutExerciseInput",
   definition(t) {
-    t.int("reps");
-    t.float("weight");
+    t.id("id");
+    t.string("name");
+    t.list.field("sets", {
+      type: WorkoutSetsInput,
+      required: true
+    });
   }
 });
 
@@ -27,8 +41,10 @@ export const SaveWorkoutInput = inputObjectType({
   name: "SaveWorkoutInput",
   definition(t) {
     t.string("title", { required: true });
+    t.int("volume");
     t.list.field("exercises", {
-      type: WorkoutExerciseInput
+      type: WorkoutExerciseInput,
+      required: true
     });
   }
 });

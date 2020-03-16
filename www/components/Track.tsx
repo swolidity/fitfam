@@ -21,12 +21,17 @@ const SAVE_WORKOUT = gql`
   }
 `;
 
-const initialState = { volume: 0, exercises: {} };
+const initialState = { title: "", volume: 0, exercises: {} };
 
 // TODO: normalize state. make flat
 
 function workoutReducer(state, action): any {
   switch (action.type) {
+    case "changeWorkoutName":
+      return {
+        ...state,
+        title: action.payload.value
+      };
     case "addExercise":
       return {
         ...state,
@@ -168,6 +173,31 @@ const Track: React.FC = () => {
     itemToString: (item: { id: string; name: string }) => item.name
   });
 
+  const handleSaveWorkout = (): void => {
+    console.log({ state });
+
+    const exercises = [];
+    Object.keys(state.exercises).map(key => {
+      const exercise = state.exercises[key];
+
+      const { ["__typename"]: remove, ...keep } = exercise;
+
+      exercises.push(keep);
+    });
+
+    console.log({ exercises });
+
+    saveWorkout({
+      variables: {
+        input: {
+          title: state.title,
+          volume: state.volume,
+          exercises
+        }
+      }
+    });
+  };
+
   return (
     <Box width="100%" p={6}>
       <Input placeholder="Track something" width="100%" {...getInputProps()} />
@@ -192,7 +222,17 @@ const Track: React.FC = () => {
         </ul>
       </Box>
 
-      <Input placeholder="Workout Name" />
+      <Input
+        placeholder="Workout Name"
+        onChange={e => {
+          dispatch({
+            type: "changeWorkoutName",
+            payload: {
+              value: e.target.value
+            }
+          });
+        }}
+      />
 
       <Heading mb={3}>Volume: {state.volume}</Heading>
 
@@ -258,7 +298,7 @@ const Track: React.FC = () => {
         })}
       </Stack>
 
-      <Button>Save</Button>
+      <Button onClick={handleSaveWorkout}>Save</Button>
     </Box>
   );
 };
