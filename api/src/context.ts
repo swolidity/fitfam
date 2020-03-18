@@ -1,10 +1,10 @@
-import { Photon, User } from "@prisma/photon";
+import { PrismaClient, User } from "@prisma/client";
 
 import jwt from "jsonwebtoken";
 
-const photon = new Photon();
+const prisma = new PrismaClient();
 
-const getUser = async (photon: Photon, token: string) => {
+const getUser = async (prisma: PrismaClient, token: string) => {
   return jwt.verify(
     token,
     process.env.JWT_SECRET as string,
@@ -14,7 +14,7 @@ const getUser = async (photon: Photon, token: string) => {
       let user;
 
       try {
-        user = await photon.users.findOne({
+        user = await prisma.user.findOne({
           where: {
             id: decoded.user_id
           }
@@ -29,7 +29,7 @@ const getUser = async (photon: Photon, token: string) => {
 };
 
 export type Context = {
-  photon: Photon;
+  prisma: PrismaClient;
   user: null | User;
 };
 
@@ -46,11 +46,11 @@ export const createContext = async (req): Promise<Context> => {
     }
 
     // try to retrieve a user with the token
-    user = await getUser(photon, token);
+    user = await getUser(prisma, token);
   }
 
   return {
-    photon,
+    prisma,
     user
   };
 };

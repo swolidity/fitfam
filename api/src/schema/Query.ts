@@ -28,7 +28,7 @@ export const Query = queryType({
         name: stringArg()
       },
       resolve: async (root, { name }, ctx) => {
-        return await ctx.photon.exercises({
+        return await ctx.prisma.exercise.findMany({
           where: {
             name: {
               contains: name

@@ -30,7 +30,7 @@ export const Mutation = mutationType({
         { url, title, artist, provider, thumbnail },
         ctx
       ) => {
-        const profileSong = await ctx.photon.profileSongs.create({
+        const profileSong = await ctx.prisma.profileSongs.create({
           data: {
             url,
             title,
@@ -63,7 +63,7 @@ export const Mutation = mutationType({
         })
       },
       resolve: async (root, { picture, bio, instagram }, ctx) => {
-        const user = ctx.photon.users.update({
+        const user = ctx.prisma.users.update({
           where: {
             id: ctx.user?.id
           },
@@ -84,7 +84,7 @@ export const Mutation = mutationType({
         input: "SaveWorkoutInput"
       },
       resolve: async (root, { input }, ctx) => {
-        const workout = await ctx.photon.workouts.create({
+        const workout = await ctx.prisma.workout.create({
           data: {
             title: input.title,
             slug: slug(input.title),
@@ -98,7 +98,7 @@ export const Mutation = mutationType({
 
         for (const exercise of input?.exercises) {
           for (const set of exercise.sets) {
-            const log = await ctx.photon.workoutLogs.create({
+            const log = await ctx.prisma.workoutLog.create({
               data: {
                 exercise: {
                   connect: {

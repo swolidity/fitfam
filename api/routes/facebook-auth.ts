@@ -4,9 +4,9 @@ const FacebookStrategy = require("passport-facebook").Strategy;
 const helmet = require("helmet");
 const app = express();
 const jwt = require("jsonwebtoken");
-import { Photon } from "@prisma/photon";
+import { PrismaClient } from "@prisma/client";
 
-let cachePhoton: Photon | null = null;
+const cachePrisma: PrismaClient | null = null;
 
 passport.use(
   new FacebookStrategy(
@@ -18,13 +18,15 @@ passport.use(
       profileFields: ["id", "name", "picture", "email"]
     },
     async (accessToken, refreshToken, { _json: profile }, cb) => {
-      const photon: Photon = cachePhoton ? cachePhoton : new Photon();
+      const prisma: PrismaClient = cachePrisma
+        ? cachePrisma
+        : new PrismaClient();
 
       const { first_name, last_name, email }: any = profile;
       const name = `${first_name} ${last_name}`;
       const username = first_name.toLowerCase();
 
-      const user = await photon.users.upsert({
+      const user = await prisma.user.upsert({
         where: {
           email
         },

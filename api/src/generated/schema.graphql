@@ -4,7 +4,7 @@
 
 type Bodyweight {
   createdAt: DateTime!
-  id: ID!
+  id: String!
   updatedAt: DateTime!
   user: User!
   weight: Float!
@@ -12,20 +12,20 @@ type Bodyweight {
 
 input BodyweightCreateInput {
   createdAt: DateTime
-  id: ID
+  id: String
   updatedAt: DateTime
-  user: UserCreateOneWithoutUserInput!
+  user: UserCreateOneWithoutBodyweightsInput!
   weight: Float!
 }
 
-input BodyweightCreateManyWithoutBodyweightsInput {
+input BodyweightCreateManyWithoutUserInput {
   connect: [BodyweightWhereUniqueInput!]
   create: [BodyweightCreateWithoutUserInput!]
 }
 
 input BodyweightCreateWithoutUserInput {
   createdAt: DateTime
-  id: ID
+  id: String
   updatedAt: DateTime
   weight: Float!
 }
@@ -40,6 +40,7 @@ input BodyweightOrderByInput {
   createdAt: OrderByArg
   id: OrderByArg
   updatedAt: OrderByArg
+  user: OrderByArg
   weight: OrderByArg
 }
 
@@ -55,7 +56,7 @@ input BodyweightWhereInput {
 }
 
 input BodyweightWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 scalar DateTime
@@ -73,28 +74,28 @@ input DateTimeFilter {
 
 type Exercise {
   createdAt: DateTime!
-  id: ID!
+  id: String!
   name: String!
   updatedAt: DateTime!
 }
 
 input ExerciseCreateInput {
   createdAt: DateTime
-  id: ID
+  id: String
   name: String!
   slug: String!
   updatedAt: DateTime
-  workoutLogs: WorkoutLogCreateManyWithoutWorkoutLogsInput
+  workoutLogs: WorkoutLogCreateManyWithoutExerciseInput
 }
 
-input ExerciseCreateOneWithoutExerciseInput {
+input ExerciseCreateOneWithoutWorkoutLogsInput {
   connect: ExerciseWhereUniqueInput
   create: ExerciseCreateWithoutWorkoutLogsInput
 }
 
 input ExerciseCreateWithoutWorkoutLogsInput {
   createdAt: DateTime
-  id: ID
+  id: String
   name: String!
   slug: String!
   updatedAt: DateTime
@@ -113,7 +114,7 @@ input ExerciseWhereInput {
 }
 
 input ExerciseWhereUniqueInput {
-  id: ID
+  id: String
   name: String
   slug: String
 }
@@ -204,7 +205,7 @@ scalar PresignedUploadURL
 type ProfileSong {
   artist: String!
   createdAt: DateTime!
-  id: ID!
+  id: String!
   provider: String!
   thumbnail: String!
   title: String!
@@ -216,16 +217,16 @@ type ProfileSong {
 input ProfileSongCreateInput {
   artist: String!
   createdAt: DateTime
-  id: ID
+  id: String
   provider: String!
   thumbnail: String!
   title: String!
   updatedAt: DateTime
   url: String!
-  user: UserCreateOneWithoutUserInput!
+  user: UserCreateOneWithoutProfile_songsInput!
 }
 
-input ProfileSongCreateManyWithoutProfile_songsInput {
+input ProfileSongCreateManyWithoutUserInput {
   connect: [ProfileSongWhereUniqueInput!]
   create: [ProfileSongCreateWithoutUserInput!]
 }
@@ -233,7 +234,7 @@ input ProfileSongCreateManyWithoutProfile_songsInput {
 input ProfileSongCreateWithoutUserInput {
   artist: String!
   createdAt: DateTime
-  id: ID
+  id: String
   provider: String!
   thumbnail: String!
   title: String!
@@ -256,6 +257,7 @@ input ProfileSongOrderByInput {
   title: OrderByArg
   updatedAt: OrderByArg
   url: OrderByArg
+  user: OrderByArg
 }
 
 input ProfileSongWhereInput {
@@ -274,21 +276,21 @@ input ProfileSongWhereInput {
 }
 
 input ProfileSongWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 type Query {
   bodyweight(where: BodyweightWhereUniqueInput!): Bodyweight
-  bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
+  bodyweights(after: BodyweightWhereUniqueInput, before: BodyweightWhereUniqueInput, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
   exercise(where: ExerciseWhereUniqueInput!): Exercise
-  exercises(after: ID, before: ID, first: Int, last: Int, skip: Int, where: ExerciseWhereInput): [Exercise!]!
+  exercises(after: ExerciseWhereUniqueInput, before: ExerciseWhereUniqueInput, first: Int, last: Int, skip: Int, where: ExerciseWhereInput): [Exercise!]!
   getLoggedInUser: User
   getPresignedUploadUrl(directory: String): PresignedUploadURL!
   oembed(url: String): Oembed!
   onetrack(name: String): [Exercise!]!
-  supplements(after: ID, before: ID, first: Int, last: Int, skip: Int): [Supplement!]!
+  supplements(after: SupplementWhereUniqueInput, before: SupplementWhereUniqueInput, first: Int, last: Int, skip: Int): [Supplement!]!
   user(where: UserWhereUniqueInput!): User
-  users(after: ID, before: ID, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int): [User!]!
+  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int): [User!]!
   workout(where: WorkoutWhereUniqueInput!): Workout
 }
 
@@ -316,7 +318,7 @@ type Supplement {
   added_by: User!
   brand: String!
   createdAt: DateTime!
-  id: ID!
+  id: String!
   image_url: String!
   name: String!
   updatedAt: DateTime!
@@ -324,27 +326,43 @@ type Supplement {
 }
 
 input SupplementCreateInput {
-  added_by: UserCreateOneWithoutAdded_byInput!
+  added_by: UserCreateOneWithoutSupplementsInput!
   brand: String!
   createdAt: DateTime
-  id: ID
+  id: String
   image_url: String!
   name: String!
-  supplementStack: SupplementStackCreateOneWithoutSupplementStackInput
+  supplementStack: SupplementStackCreateOneWithoutSupplementsInput
   updatedAt: DateTime
   url: String!
 }
 
-input SupplementCreateManyWithoutSupplementsInput {
+input SupplementCreateManyWithoutAdded_byInput {
+  connect: [SupplementWhereUniqueInput!]
+  create: [SupplementCreateWithoutAdded_byInput!]
+}
+
+input SupplementCreateManyWithoutSupplementStackInput {
   connect: [SupplementWhereUniqueInput!]
   create: [SupplementCreateWithoutSupplementStackInput!]
 }
 
-input SupplementCreateWithoutSupplementStackInput {
-  added_by: UserCreateOneWithoutAdded_byInput!
+input SupplementCreateWithoutAdded_byInput {
   brand: String!
   createdAt: DateTime
-  id: ID
+  id: String
+  image_url: String!
+  name: String!
+  supplementStack: SupplementStackCreateOneWithoutSupplementsInput
+  updatedAt: DateTime
+  url: String!
+}
+
+input SupplementCreateWithoutSupplementStackInput {
+  added_by: UserCreateOneWithoutSupplementsInput!
+  brand: String!
+  createdAt: DateTime
+  id: String
   image_url: String!
   name: String!
   updatedAt: DateTime
@@ -359,33 +377,33 @@ input SupplementFilter {
 
 type SupplementStack {
   createdAt: DateTime!
-  id: ID!
-  supplements(after: ID, before: ID, first: Int, last: Int, skip: Int): [Supplement!]!
+  id: String!
+  supplements(after: SupplementWhereUniqueInput, before: SupplementWhereUniqueInput, first: Int, last: Int, skip: Int): [Supplement!]!
   updatedAt: DateTime!
   user: User!
 }
 
-input SupplementStackCreateManyWithoutSupplement_stackInput {
+input SupplementStackCreateManyWithoutUserInput {
   connect: [SupplementStackWhereUniqueInput!]
   create: [SupplementStackCreateWithoutUserInput!]
 }
 
-input SupplementStackCreateOneWithoutSupplementStackInput {
+input SupplementStackCreateOneWithoutSupplementsInput {
   connect: SupplementStackWhereUniqueInput
   create: SupplementStackCreateWithoutSupplementsInput
 }
 
 input SupplementStackCreateWithoutSupplementsInput {
   createdAt: DateTime
-  id: ID
+  id: String
   updatedAt: DateTime
-  user: UserCreateOneWithoutUserInput!
+  user: UserCreateOneWithoutSupplement_stackInput!
 }
 
 input SupplementStackCreateWithoutUserInput {
   createdAt: DateTime
-  id: ID
-  supplements: SupplementCreateManyWithoutSupplementsInput
+  id: String
+  supplements: SupplementCreateManyWithoutSupplementStackInput
   updatedAt: DateTime
 }
 
@@ -407,7 +425,7 @@ input SupplementStackWhereInput {
 }
 
 input SupplementStackWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 input SupplementWhereInput {
@@ -426,73 +444,169 @@ input SupplementWhereInput {
 }
 
 input SupplementWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 type User {
   bio: String
-  bodyweights(after: ID, before: ID, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
+  bodyweights(after: BodyweightWhereUniqueInput, before: BodyweightWhereUniqueInput, first: Int, last: Int, orderBy: BodyweightOrderByInput, skip: Int): [Bodyweight!]!
   createdAt: DateTime!
   dateOfBirth: DateTime
   email: String!
   height: String
-  id: ID!
+  id: String!
   instagram: String
   name: String!
   picture: String!
-  profile_songs(after: ID, before: ID, first: Int, last: Int, orderBy: ProfileSongOrderByInput, skip: Int): [ProfileSong!]!
-  supplement_stack(after: ID, before: ID, first: Int, last: Int, skip: Int): [SupplementStack!]!
+  profile_songs(after: ProfileSongWhereUniqueInput, before: ProfileSongWhereUniqueInput, first: Int, last: Int, orderBy: ProfileSongOrderByInput, skip: Int): [ProfileSong!]!
+  supplement_stack(after: SupplementStackWhereUniqueInput, before: SupplementStackWhereUniqueInput, first: Int, last: Int, skip: Int): [SupplementStack!]!
   updatedAt: DateTime!
   username: String!
-  workouts(after: ID, before: ID, first: Int, last: Int, orderBy: WorkoutOrderByInput, skip: Int): [Workout!]!
+  workouts(after: WorkoutWhereUniqueInput, before: WorkoutWhereUniqueInput, first: Int, last: Int, orderBy: WorkoutOrderByInput, skip: Int): [Workout!]!
 }
 
-input UserCreateOneWithoutAdded_byInput {
+input UserCreateOneWithoutBodyweightsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutBodyweightsInput
+}
+
+input UserCreateOneWithoutProfile_songsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutProfile_songsInput
+}
+
+input UserCreateOneWithoutSupplement_stackInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutSupplement_stackInput
+}
+
+input UserCreateOneWithoutSupplementsInput {
   connect: UserWhereUniqueInput
   create: UserCreateWithoutSupplementsInput
 }
 
-input UserCreateOneWithoutUserInput {
+input UserCreateOneWithoutWorkoutLogsInput {
   connect: UserWhereUniqueInput
   create: UserCreateWithoutWorkoutLogsInput
 }
 
-input UserCreateWithoutSupplementsInput {
+input UserCreateOneWithoutWorkoutsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutWorkoutsInput
+}
+
+input UserCreateWithoutBodyweightsInput {
   bio: String
-  bodyweights: BodyweightCreateManyWithoutBodyweightsInput
   createdAt: DateTime
   dateOfBirth: DateTime
   email: String!
   height: String
-  id: ID
+  id: String
   instagram: String
   name: String!
   picture: String!
-  profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
-  supplement_stack: SupplementStackCreateManyWithoutSupplement_stackInput
+  profile_songs: ProfileSongCreateManyWithoutUserInput
+  supplement_stack: SupplementStackCreateManyWithoutUserInput
+  supplements: SupplementCreateManyWithoutAdded_byInput
   updatedAt: DateTime
   username: String!
-  workoutLogs: WorkoutLogCreateManyWithoutWorkoutLogsInput
-  workouts: WorkoutCreateManyWithoutWorkoutsInput
+  workoutLogs: WorkoutLogCreateManyWithoutUserInput
+  workouts: WorkoutCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutProfile_songsInput {
+  bio: String
+  bodyweights: BodyweightCreateManyWithoutUserInput
+  createdAt: DateTime
+  dateOfBirth: DateTime
+  email: String!
+  height: String
+  id: String
+  instagram: String
+  name: String!
+  picture: String!
+  supplement_stack: SupplementStackCreateManyWithoutUserInput
+  supplements: SupplementCreateManyWithoutAdded_byInput
+  updatedAt: DateTime
+  username: String!
+  workoutLogs: WorkoutLogCreateManyWithoutUserInput
+  workouts: WorkoutCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutSupplement_stackInput {
+  bio: String
+  bodyweights: BodyweightCreateManyWithoutUserInput
+  createdAt: DateTime
+  dateOfBirth: DateTime
+  email: String!
+  height: String
+  id: String
+  instagram: String
+  name: String!
+  picture: String!
+  profile_songs: ProfileSongCreateManyWithoutUserInput
+  supplements: SupplementCreateManyWithoutAdded_byInput
+  updatedAt: DateTime
+  username: String!
+  workoutLogs: WorkoutLogCreateManyWithoutUserInput
+  workouts: WorkoutCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutSupplementsInput {
+  bio: String
+  bodyweights: BodyweightCreateManyWithoutUserInput
+  createdAt: DateTime
+  dateOfBirth: DateTime
+  email: String!
+  height: String
+  id: String
+  instagram: String
+  name: String!
+  picture: String!
+  profile_songs: ProfileSongCreateManyWithoutUserInput
+  supplement_stack: SupplementStackCreateManyWithoutUserInput
+  updatedAt: DateTime
+  username: String!
+  workoutLogs: WorkoutLogCreateManyWithoutUserInput
+  workouts: WorkoutCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutWorkoutLogsInput {
   bio: String
-  bodyweights: BodyweightCreateManyWithoutBodyweightsInput
+  bodyweights: BodyweightCreateManyWithoutUserInput
   createdAt: DateTime
   dateOfBirth: DateTime
   email: String!
   height: String
-  id: ID
+  id: String
   instagram: String
   name: String!
   picture: String!
-  profile_songs: ProfileSongCreateManyWithoutProfile_songsInput
-  supplement_stack: SupplementStackCreateManyWithoutSupplement_stackInput
-  supplements: SupplementCreateManyWithoutSupplementsInput
+  profile_songs: ProfileSongCreateManyWithoutUserInput
+  supplement_stack: SupplementStackCreateManyWithoutUserInput
+  supplements: SupplementCreateManyWithoutAdded_byInput
   updatedAt: DateTime
   username: String!
-  workouts: WorkoutCreateManyWithoutWorkoutsInput
+  workouts: WorkoutCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutWorkoutsInput {
+  bio: String
+  bodyweights: BodyweightCreateManyWithoutUserInput
+  createdAt: DateTime
+  dateOfBirth: DateTime
+  email: String!
+  height: String
+  id: String
+  instagram: String
+  name: String!
+  picture: String!
+  profile_songs: ProfileSongCreateManyWithoutUserInput
+  supplement_stack: SupplementStackCreateManyWithoutUserInput
+  supplements: SupplementCreateManyWithoutAdded_byInput
+  updatedAt: DateTime
+  username: String!
+  workoutLogs: WorkoutLogCreateManyWithoutUserInput
 }
 
 input UserOrderByInput {
@@ -534,14 +648,14 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   email: String
-  id: ID
+  id: String
   username: String
 }
 
 type Workout {
   createdAt: DateTime!
-  id: ID!
-  logs(after: ID, before: ID, first: Int, last: Int, orderBy: WorkoutLogOrderByInput, skip: Int): [WorkoutLog!]!
+  id: String!
+  logs(after: WorkoutLogWhereUniqueInput, before: WorkoutLogWhereUniqueInput, first: Int, last: Int, orderBy: WorkoutLogOrderByInput, skip: Int): [WorkoutLog!]!
   slug: String!
   title: String!
   updatedAt: DateTime!
@@ -550,37 +664,37 @@ type Workout {
 
 input WorkoutCreateInput {
   createdAt: DateTime
-  id: ID
-  logs: WorkoutLogCreateManyWithoutLogsInput
+  id: String
+  logs: WorkoutLogCreateManyWithoutWorkoutInput
   slug: String!
   title: String!
   updatedAt: DateTime
-  user: UserCreateOneWithoutUserInput!
+  user: UserCreateOneWithoutWorkoutsInput!
 }
 
-input WorkoutCreateManyWithoutWorkoutsInput {
+input WorkoutCreateManyWithoutUserInput {
   connect: [WorkoutWhereUniqueInput!]
   create: [WorkoutCreateWithoutUserInput!]
 }
 
-input WorkoutCreateOneWithoutWorkoutInput {
+input WorkoutCreateOneWithoutLogsInput {
   connect: WorkoutWhereUniqueInput
   create: WorkoutCreateWithoutLogsInput
 }
 
 input WorkoutCreateWithoutLogsInput {
   createdAt: DateTime
-  id: ID
+  id: String
   slug: String!
   title: String!
   updatedAt: DateTime
-  user: UserCreateOneWithoutUserInput!
+  user: UserCreateOneWithoutWorkoutsInput!
 }
 
 input WorkoutCreateWithoutUserInput {
   createdAt: DateTime
-  id: ID
-  logs: WorkoutLogCreateManyWithoutLogsInput
+  id: String
+  logs: WorkoutLogCreateManyWithoutWorkoutInput
   slug: String!
   title: String!
   updatedAt: DateTime
@@ -601,7 +715,7 @@ input WorkoutFilter {
 type WorkoutLog {
   createdAt: DateTime!
   exercise: Exercise!
-  id: ID!
+  id: String!
   reps: Int!
   updatedAt: DateTime!
   user: User!
@@ -611,42 +725,57 @@ type WorkoutLog {
 
 input WorkoutLogCreateInput {
   createdAt: DateTime
-  exercise: ExerciseCreateOneWithoutExerciseInput!
-  id: ID
+  exercise: ExerciseCreateOneWithoutWorkoutLogsInput!
+  id: String
   reps: Int!
   updatedAt: DateTime
-  user: UserCreateOneWithoutUserInput!
+  user: UserCreateOneWithoutWorkoutLogsInput!
   weight: Float!
-  workout: WorkoutCreateOneWithoutWorkoutInput!
+  workout: WorkoutCreateOneWithoutLogsInput!
 }
 
-input WorkoutLogCreateManyWithoutLogsInput {
+input WorkoutLogCreateManyWithoutExerciseInput {
   connect: [WorkoutLogWhereUniqueInput!]
-  create: [WorkoutLogCreateWithoutWorkoutInput!]
+  create: [WorkoutLogCreateWithoutExerciseInput!]
 }
 
-input WorkoutLogCreateManyWithoutWorkoutLogsInput {
+input WorkoutLogCreateManyWithoutUserInput {
   connect: [WorkoutLogWhereUniqueInput!]
   create: [WorkoutLogCreateWithoutUserInput!]
 }
 
+input WorkoutLogCreateManyWithoutWorkoutInput {
+  connect: [WorkoutLogWhereUniqueInput!]
+  create: [WorkoutLogCreateWithoutWorkoutInput!]
+}
+
+input WorkoutLogCreateWithoutExerciseInput {
+  createdAt: DateTime
+  id: String
+  reps: Int!
+  updatedAt: DateTime
+  user: UserCreateOneWithoutWorkoutLogsInput!
+  weight: Float!
+  workout: WorkoutCreateOneWithoutLogsInput!
+}
+
 input WorkoutLogCreateWithoutUserInput {
   createdAt: DateTime
-  exercise: ExerciseCreateOneWithoutExerciseInput!
-  id: ID
+  exercise: ExerciseCreateOneWithoutWorkoutLogsInput!
+  id: String
   reps: Int!
   updatedAt: DateTime
   weight: Float!
-  workout: WorkoutCreateOneWithoutWorkoutInput!
+  workout: WorkoutCreateOneWithoutLogsInput!
 }
 
 input WorkoutLogCreateWithoutWorkoutInput {
   createdAt: DateTime
-  exercise: ExerciseCreateOneWithoutExerciseInput!
-  id: ID
+  exercise: ExerciseCreateOneWithoutWorkoutLogsInput!
+  id: String
   reps: Int!
   updatedAt: DateTime
-  user: UserCreateOneWithoutUserInput!
+  user: UserCreateOneWithoutWorkoutLogsInput!
   weight: Float!
 }
 
@@ -658,10 +787,13 @@ input WorkoutLogFilter {
 
 input WorkoutLogOrderByInput {
   createdAt: OrderByArg
+  exercise: OrderByArg
   id: OrderByArg
   reps: OrderByArg
   updatedAt: OrderByArg
+  user: OrderByArg
   weight: OrderByArg
+  workout: OrderByArg
 }
 
 input WorkoutLogWhereInput {
@@ -679,7 +811,7 @@ input WorkoutLogWhereInput {
 }
 
 input WorkoutLogWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 input WorkoutOrderByInput {
@@ -688,6 +820,7 @@ input WorkoutOrderByInput {
   slug: OrderByArg
   title: OrderByArg
   updatedAt: OrderByArg
+  user: OrderByArg
 }
 
 input WorkoutSetsInput {
@@ -709,5 +842,5 @@ input WorkoutWhereInput {
 }
 
 input WorkoutWhereUniqueInput {
-  id: ID
+  id: String
 }
