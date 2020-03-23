@@ -12,6 +12,7 @@ export const Mutation = mutationType({
 
     t.crud.createOneExercise();
     t.crud.createOneWorkout();
+    t.crud.deleteOneWorkout();
     t.crud.createOneWorkoutLog();
 
     t.crud.createOneSupplement();

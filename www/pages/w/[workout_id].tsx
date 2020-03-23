@@ -2,9 +2,19 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Flex, Stack, Box, Heading, Image, Text, Link } from "@chakra-ui/core";
+import {
+  Flex,
+  Stack,
+  Box,
+  Heading,
+  Image,
+  Text,
+  Link,
+  Button
+} from "@chakra-ui/core";
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
+import DeleteWorkoutButton from "../../components/DeleteWorkoutButton";
 
 const GET_WORKOUT = gql`
   query GET_WORKOUT($where: WorkoutWhereUniqueInput!) {
@@ -75,13 +85,15 @@ const WorkoutPage = () => {
         </Box>
       </Flex>
 
-      <Stack spacing={2}>
+      <Stack spacing={2} mb={3}>
         {data.workout.logs.map(log => (
           <Box p={2} backgroundColor="#fafafa">
             {log.exercise.name} {log.weight} x {log.reps}
           </Box>
         ))}
       </Stack>
+
+      <DeleteWorkoutButton workoutId={data.workout.id} />
     </Box>
   );
 };
