@@ -46,7 +46,7 @@ const UserProfile = ({ user }) => {
       </Box>
 
       <Heading size="md" mb={2}>
-        {user.workouts.length} workouts
+        {user.workouts.length} workout{user.workouts.length !== 1 ? "s" : ""}
       </Heading>
 
       <Stack spacing={2}>
