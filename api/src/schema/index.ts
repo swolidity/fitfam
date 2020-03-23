@@ -40,8 +40,8 @@ export default Nexus.makeSchema({
   typegenAutoConfig: {
     sources: [
       {
-        source: "@prisma/photon",
-        alias: "photon"
+        source: "@prisma/client",
+        alias: "prisma"
       },
       {
         source: require.resolve("../context"),
