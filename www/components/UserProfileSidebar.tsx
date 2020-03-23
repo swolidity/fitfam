@@ -16,15 +16,6 @@ const UserProfileSidebar = ({ user }) => {
   return (
     <>
       <UserProfileSong user={user} />
-
-      <Box mb={2}>
-        <Heading as="h2" size="xs">
-          TRAINS AT
-        </Heading>
-        <Text>Bangor Brewer Athletic Club</Text>
-      </Box>
-
-      <SupplementStackSidebar />
     </>
   );
 };
