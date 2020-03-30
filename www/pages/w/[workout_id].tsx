@@ -93,6 +93,10 @@ const WorkoutPage = () => {
         ))}
       </Stack>
 
+      <NextLink href="/w/[workout_id]/edit" as={`/w/${data.workout.id}/edit`}>
+        <Button mr={2}>Edit</Button>
+      </NextLink>
+
       <DeleteWorkoutButton workoutId={data.workout.id} />
     </Box>
   );

@@ -85,41 +85,67 @@ export const Mutation = mutationType({
         input: "SaveWorkoutInput"
       },
       resolve: async (root, { input }, ctx) => {
-        const workout = await ctx.prisma.workout.create({
-          data: {
-            title: input.title,
-            slug: slug(input.title),
-            user: {
-              connect: {
-                id: ctx.user.id
+        let workout;
+        if (input?.workoutId) {
+          workout = await ctx.prisma.workout.update({
+            where: {
+              id: input.workoutId
+            },
+            data: {
+              title: input.title,
+              slug: slug(input.title)
+            }
+          });
+        } else {
+          workout = await ctx.prisma.workout.create({
+            data: {
+              title: input.title,
+              slug: slug(input.title),
+              user: {
+                connect: {
+                  id: ctx.user.id
+                }
               }
             }
-          }
-        });
+          });
+        }
 
         for (const exercise of input?.exercises) {
           for (const set of exercise.sets) {
-            const log = await ctx.prisma.workoutLog.create({
-              data: {
-                exercise: {
-                  connect: {
-                    id: exercise.id
-                  }
+            let log;
+            if (set.logId) {
+              log = await ctx.prisma.workoutLog.update({
+                where: {
+                  id: set.logId
                 },
-                workout: {
-                  connect: {
-                    id: workout.id
-                  }
-                },
-                user: {
-                  connect: {
-                    id: ctx.user.id
-                  }
-                },
-                weight: set.weight,
-                reps: set.reps
-              }
-            });
+                data: {
+                  weight: set.weight,
+                  reps: set.reps
+                }
+              });
+            } else {
+              log = await ctx.prisma.workoutLog.create({
+                data: {
+                  exercise: {
+                    connect: {
+                      id: exercise.id
+                    }
+                  },
+                  workout: {
+                    connect: {
+                      id: workout.id
+                    }
+                  },
+                  user: {
+                    connect: {
+                      id: ctx.user.id
+                    }
+                  },
+                  weight: set.weight,
+                  reps: set.reps
+                }
+              });
+            }
           }
         }
 

@@ -18,6 +18,7 @@ export const Workout = objectType({
 export const WorkoutSetsInput = inputObjectType({
   name: "WorkoutSetsInput",
   definition(t) {
+    t.id("logId");
     t.float("weight", {
       required: true
     });
@@ -40,6 +41,7 @@ export const WorkoutExerciseInput = inputObjectType({
 export const SaveWorkoutInput = inputObjectType({
   name: "SaveWorkoutInput",
   definition(t) {
+    t.id("workoutId");
     t.string("title", { required: true });
     t.int("volume");
     t.list.field("exercises", {

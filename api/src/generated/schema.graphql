@@ -149,6 +149,7 @@ type Mutation {
   createOneSupplement(data: SupplementCreateInput!): Supplement!
   createOneWorkout(data: WorkoutCreateInput!): Workout!
   createOneWorkoutLog(data: WorkoutLogCreateInput!): WorkoutLog!
+  deleteOneWorkout(where: WorkoutWhereUniqueInput!): Workout
   editProfile(bio: String, instagram: String, picture: String): User!
   saveWorkout(input: SaveWorkoutInput): Workout!
 }
@@ -298,6 +299,7 @@ input SaveWorkoutInput {
   exercises: [WorkoutExerciseInput!]!
   title: String!
   volume: Int
+  workoutId: ID
 }
 
 input StringFilter {
@@ -824,6 +826,7 @@ input WorkoutOrderByInput {
 }
 
 input WorkoutSetsInput {
+  logId: ID
   reps: Int!
   weight: Float!
 }

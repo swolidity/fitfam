@@ -21,6 +21,11 @@ const SAVE_WORKOUT = gql`
   }
 `;
 
+type TrackProps = {
+  workout?: any;
+  logs?: any;
+};
+
 const initialState = { title: "", volume: 0, exercises: {} };
 
 // TODO: normalize state. make flat
@@ -89,8 +94,6 @@ function workoutReducer(state, action): any {
         }, 0);
 
         volume += setVolume;
-
-        // volume += exercise.weight * exercise.reps;
       });
 
       return {
@@ -140,13 +143,17 @@ function workoutReducer(state, action): any {
   }
 }
 
-const Track: React.FC = () => {
+const Track: React.FC<TrackProps> = ({ workout, logs }) => {
   const { data, loading, refetch } = useQuery(TRACK_AUTOCOMPLETE, {
     variables: {
       name: ""
     }
   });
-  const [state, dispatch] = useReducer(workoutReducer, initialState);
+  const [state, dispatch] = useReducer(workoutReducer, {
+    title: workout.title || "",
+    volume: 0,
+    exercises: logs || {}
+  });
 
   const [saveWorkout, { data: mutationData }] = useMutation(SAVE_WORKOUT, {});
 
@@ -174,8 +181,6 @@ const Track: React.FC = () => {
   });
 
   const handleSaveWorkout = (): void => {
-    console.log({ state });
-
     const exercises = [];
     Object.keys(state.exercises).map(key => {
       const exercise = state.exercises[key];
@@ -185,11 +190,10 @@ const Track: React.FC = () => {
       exercises.push(keep);
     });
 
-    console.log({ exercises });
-
     saveWorkout({
       variables: {
         input: {
+          workoutId: workout.id,
           title: state.title,
           volume: state.volume,
           exercises
@@ -224,6 +228,7 @@ const Track: React.FC = () => {
 
       <Input
         placeholder="Workout Name"
+        value={state.title}
         onChange={e => {
           dispatch({
             type: "changeWorkoutName",
@@ -236,7 +241,7 @@ const Track: React.FC = () => {
 
       <Heading mb={3}>Volume: {state.volume}</Heading>
 
-      <Stack spacing={2}>
+      <Stack spacing={2} mb={3}>
         {Object.keys(state.exercises).map(key => {
           const exercise = state.exercises[key];
 
@@ -252,6 +257,7 @@ const Track: React.FC = () => {
               {exercise.sets.map((set, i) => (
                 <Box key={i} mb={3}>
                   <Input
+                    mb={2}
                     placeholder="Weight"
                     name={`weight-${exercise.id}`}
                     onChange={e => {
@@ -264,10 +270,10 @@ const Track: React.FC = () => {
                         }
                       });
                     }}
+                    value={set.weight}
                   />
                   <Input
                     placeholder="Reps"
-                    defaultValue={0}
                     onChange={e => {
                       dispatch({
                         type: "repChange",
@@ -278,6 +284,7 @@ const Track: React.FC = () => {
                         }
                       });
                     }}
+                    value={set.reps}
                   />
                 </Box>
               ))}
