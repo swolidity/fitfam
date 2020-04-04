@@ -93,8 +93,14 @@ const WorkoutPage = () => {
         ))}
       </Stack>
 
-      <NextLink href="/w/[workout_id]/edit" as={`/w/${data.workout.id}/edit`}>
-        <Button mr={2}>Edit</Button>
+      <NextLink
+        href="/w/[workout_id]/edit"
+        as={`/w/${data.workout.id}/edit`}
+        passHref
+      >
+        <Link>
+          <Button mr={2}>Edit</Button>
+        </Link>
       </NextLink>
 
       <DeleteWorkoutButton workoutId={data.workout.id} />
