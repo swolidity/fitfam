@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import Track from "../../../components/Track";
+import { NextPage } from "next";
 
 const GET_WORKOUT = gql`
   query GetWorkout($where: WorkoutWhereUniqueInput!) {
@@ -24,7 +25,7 @@ const GET_WORKOUT = gql`
   }
 `;
 
-const EditWorkoutPage: React.FC = () => {
+const EditWorkoutPage: NextPage = () => {
   const router = useRouter();
   const { data, loading } = useQuery(GET_WORKOUT, {
     variables: {
