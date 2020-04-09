@@ -40,7 +40,6 @@ const EditWorkoutPage: NextPage = () => {
   const logs = useMemo(() => {
     const normalizedLogs = {};
     data?.workout?.logs.forEach(log => {
-      console.log({ log });
       normalizedLogs[log.exercise.id] = {
         ...log.exercise,
         ...(normalizedLogs[log.exercise.id]?.sets

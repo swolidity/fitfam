@@ -1,8 +1,17 @@
 import React, { useReducer } from "react";
-import { Stack, Box, Button, Input, Heading } from "@chakra-ui/core";
+import {
+  Stack,
+  Flex,
+  Box,
+  Button,
+  Input,
+  Heading,
+  Text
+} from "@chakra-ui/core";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useCombobox } from "downshift";
+import { useImmerReducer } from "use-immer";
 
 const TRACK_AUTOCOMPLETE = gql`
   query OneTrackAutoComplete($name: String!) {
@@ -26,67 +35,34 @@ type TrackProps = {
   logs?: any;
 };
 
-const initialState = { title: "", volume: 0, exercises: {} };
-
 // TODO: normalize state. make flat
 
-function workoutReducer(state, action): any {
+function workoutReducer(draft, action): any {
   switch (action.type) {
     case "changeWorkoutName":
-      return {
-        ...state,
-        title: action.payload.value
-      };
+      draft.title = action.payload.value;
+
     case "addExercise":
-      return {
-        ...state,
-        exercises: {
-          ...state.exercises,
-          [action.payload.id]: {
-            ...action.payload,
-            sets: [{ weight: 0, reps: 1 }]
-          }
-        }
+      draft.exercises[action.payload.id] = {
+        ...action.payload,
+        sets: [{ weight: 0, reps: 1 }]
       };
+
+      return;
+
     case "addSet":
-      return {
-        ...state,
-        exercises: {
-          ...state.exercises,
-          [action.payload.id]: {
-            ...state.exercises[action.payload.id],
-            sets: [
-              ...state.exercises[action.payload.id].sets,
-              { weight: 0, reps: 1 }
-            ]
-          }
-        }
-      };
+      draft.exercises[action.payload.id].sets.push({ weight: 0, reps: 1 });
+      return;
     case "weightChange":
-      const exercises = {
-        ...state.exercises,
-        [action.payload.id]: {
-          ...state.exercises[action.payload.id],
-          sets: [
-            ...state.exercises[action.payload.id].sets.slice(
-              0,
-              action.payload.index
-            ),
-            {
-              ...state.exercises[action.payload.id].sets[action.payload.index],
-              weight: parseInt(action.payload.value)
-            },
-            ...state.exercises[action.payload.id].sets.slice(
-              action.payload.index + 1
-            )
-          ]
-        }
+      draft.exercises[action.payload.id].sets[action.payload.index] = {
+        ...draft.exercises[action.payload.id].sets[action.payload.index],
+        weight: parseInt(action.payload.value)
       };
 
       let volume = 0;
 
-      Object.keys(exercises).forEach(key => {
-        const exercise = exercises[key];
+      Object.keys(draft.exercises).forEach(key => {
+        const exercise = draft.exercises[key];
 
         const setVolume = exercise.sets.reduce((total, set) => {
           const v = set.weight * set.reps;
@@ -96,37 +72,19 @@ function workoutReducer(state, action): any {
         volume += setVolume;
       });
 
-      return {
-        ...state,
-        exercises,
-        volume
-      };
+      draft.volume = volume;
 
+      return;
     case "repChange":
-      const repExercises = {
-        ...state.exercises,
-        [action.payload.id]: {
-          ...state.exercises[action.payload.id],
-          sets: [
-            ...state.exercises[action.payload.id].sets.slice(
-              0,
-              action.payload.index
-            ),
-            {
-              ...state.exercises[action.payload.id].sets[action.payload.index],
-              reps: parseInt(action.payload.value)
-            },
-            ...state.exercises[action.payload.id].sets.slice(
-              action.payload.index + 1
-            )
-          ]
-        }
+      draft.exercises[action.payload.id].sets[action.payload.index] = {
+        ...draft.exercises[action.payload.id].sets[action.payload.index],
+        reps: parseInt(action.payload.value)
       };
 
       let repVolume = 0;
 
-      Object.keys(repExercises).forEach(key => {
-        const exercise = repExercises[key];
+      Object.keys(draft.exercises).forEach(key => {
+        const exercise = draft.exercises[key];
 
         const newRepVolume = exercise.sets.reduce((total, set) => {
           return total + set.weight * set.reps;
@@ -135,11 +93,13 @@ function workoutReducer(state, action): any {
         repVolume += newRepVolume;
       });
 
-      return {
-        ...state,
-        exercises: repExercises,
-        volume: repVolume
-      };
+      draft.volume = repVolume;
+
+      return;
+
+    case "deleteSet":
+      alert("Delete Set");
+      return;
   }
 }
 
@@ -149,7 +109,7 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
       name: ""
     }
   });
-  const [state, dispatch] = useReducer(workoutReducer, {
+  const [state, dispatch] = useImmerReducer(workoutReducer, {
     title: workout.title || "",
     volume: 0,
     exercises: logs || {}
@@ -201,6 +161,8 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
       }
     });
   };
+
+  console.log({ state });
 
   return (
     <Box width="100%" p={6}>
@@ -255,40 +217,61 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
             >
               {exercise.name} x {exercise.sets.length}
               {exercise.sets.map((set, i) => (
-                <Box key={i} mb={3}>
-                  <Input
-                    mb={2}
-                    placeholder="Weight"
-                    name={`weight-${exercise.id}`}
-                    onChange={e => {
+                <Flex key={i} mb={3} justify="space-between">
+                  <Box>
+                    <Flex align="center">
+                      <Input
+                        mr={2}
+                        maxWidth="100px"
+                        placeholder="Weight"
+                        name={`weight-${exercise.id}`}
+                        onChange={e => {
+                          dispatch({
+                            type: "weightChange",
+                            payload: {
+                              id: exercise.id,
+                              value: e.target.value,
+                              index: i
+                            }
+                          });
+                        }}
+                        value={set.weight}
+                      />
+                      <Text mr={2}>X</Text>
+                      <Input
+                        maxWidth="100px"
+                        placeholder="Reps"
+                        onChange={e => {
+                          dispatch({
+                            type: "repChange",
+                            payload: {
+                              id: exercise.id,
+                              value: e.target.value,
+                              index: i
+                            }
+                          });
+                        }}
+                        value={set.reps}
+                      />
+                    </Flex>
+                  </Box>
+                  <Button
+                    onClick={e => {
                       dispatch({
-                        type: "weightChange",
+                        type: "deleteSet",
                         payload: {
                           id: exercise.id,
-                          value: e.target.value,
                           index: i
                         }
                       });
                     }}
-                    value={set.weight}
-                  />
-                  <Input
-                    placeholder="Reps"
-                    onChange={e => {
-                      dispatch({
-                        type: "repChange",
-                        payload: {
-                          id: exercise.id,
-                          value: e.target.value,
-                          index: i
-                        }
-                      });
-                    }}
-                    value={set.reps}
-                  />
-                </Box>
+                  >
+                    Delete
+                  </Button>
+                </Flex>
               ))}
               <Button
+                p={2}
                 onClick={() => {
                   dispatch({
                     type: "addSet",
