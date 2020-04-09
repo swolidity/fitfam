@@ -27,7 +27,7 @@ export default Nexus.makeSchema({
     Exercise,
     Oembed,
     Supplement,
-    SupplementStack
+    SupplementStack,
   ],
   plugins: [nexusPrismaPlugin(), Nexus.fieldAuthorizePlugin()],
   outputs: {
@@ -35,19 +35,19 @@ export default Nexus.makeSchema({
       __dirname,
       "../../node_modules/@types/nexus-typegen/index.d.ts"
     ),
-    schema: path.join(__dirname, "../generated/schema.graphql")
+    schema: path.join(__dirname, "../generated/schema.graphql"),
   },
   typegenAutoConfig: {
     sources: [
       {
         source: "@prisma/client",
-        alias: "prisma"
+        alias: "prisma",
       },
       {
         source: require.resolve("../context"),
-        alias: "Context"
-      }
+        alias: "Context",
+      },
     ],
-    contextType: "Context.Context"
-  }
+    contextType: "Context.Context",
+  },
 });

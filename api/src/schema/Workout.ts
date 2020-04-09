@@ -8,11 +8,11 @@ export const Workout = objectType({
     t.model.title();
     t.model.slug();
     t.model.logs({
-      ordering: true
+      ordering: true,
     });
     t.model.createdAt();
     t.model.updatedAt();
-  }
+  },
 });
 
 export const WorkoutSetsInput = inputObjectType({
@@ -20,10 +20,10 @@ export const WorkoutSetsInput = inputObjectType({
   definition(t) {
     t.id("logId");
     t.float("weight", {
-      required: true
+      required: true,
     });
     t.int("reps", { required: true });
-  }
+  },
 });
 
 export const WorkoutExerciseInput = inputObjectType({
@@ -33,9 +33,9 @@ export const WorkoutExerciseInput = inputObjectType({
     t.string("name");
     t.list.field("sets", {
       type: WorkoutSetsInput,
-      required: true
+      required: true,
     });
-  }
+  },
 });
 
 export const SaveWorkoutInput = inputObjectType({
@@ -46,7 +46,8 @@ export const SaveWorkoutInput = inputObjectType({
     t.int("volume");
     t.list.field("exercises", {
       type: WorkoutExerciseInput,
-      required: true
+      required: true,
     });
-  }
+    t.list.id("deleteLogs");
+  },
 });

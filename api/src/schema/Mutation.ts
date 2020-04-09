@@ -5,7 +5,7 @@ import slug from "slug";
 export const Mutation = mutationType({
   definition(t) {
     t.crud.createOneBodyweight({
-      authorize: () => false
+      authorize: () => false,
     });
 
     t.crud.createOneProfileSong();
@@ -24,7 +24,7 @@ export const Mutation = mutationType({
         title: stringArg(),
         artist: stringArg(),
         provider: stringArg(),
-        thumbnail: stringArg()
+        thumbnail: stringArg(),
       },
       resolve: async (
         root,
@@ -40,61 +40,61 @@ export const Mutation = mutationType({
             thumbnail: thumbnail,
             user: {
               connect: {
-                id: ctx.user?.id
-              }
-            }
-          }
+                id: ctx.user?.id,
+              },
+            },
+          },
         });
 
         return profileSong;
-      }
+      },
     });
 
     t.field("editProfile", {
       type: "User",
       args: {
         picture: stringArg({
-          nullable: true
+          nullable: true,
         }),
         bio: stringArg({
-          nullable: true
+          nullable: true,
         }),
         instagram: stringArg({
-          nullable: true
-        })
+          nullable: true,
+        }),
       },
       resolve: async (root, { picture, bio, instagram }, ctx) => {
         const user = ctx.prisma.users.update({
           where: {
-            id: ctx.user?.id
+            id: ctx.user?.id,
           },
           data: {
             picture,
             bio,
-            instagram
-          }
+            instagram,
+          },
         });
 
         return user;
-      }
+      },
     });
 
     t.field("saveWorkout", {
       type: "Workout",
       args: {
-        input: "SaveWorkoutInput"
+        input: "SaveWorkoutInput",
       },
       resolve: async (root, { input }, ctx) => {
         let workout;
         if (input?.workoutId) {
           workout = await ctx.prisma.workout.update({
             where: {
-              id: input.workoutId
+              id: input.workoutId,
             },
             data: {
               title: input.title,
-              slug: slug(input.title)
-            }
+              slug: slug(input.title),
+            },
           });
         } else {
           workout = await ctx.prisma.workout.create({
@@ -103,10 +103,10 @@ export const Mutation = mutationType({
               slug: slug(input.title),
               user: {
                 connect: {
-                  id: ctx.user.id
-                }
-              }
-            }
+                  id: ctx.user.id,
+                },
+              },
+            },
           });
         }
 
@@ -116,41 +116,49 @@ export const Mutation = mutationType({
             if (set.logId) {
               log = await ctx.prisma.workoutLog.update({
                 where: {
-                  id: set.logId
+                  id: set.logId,
                 },
                 data: {
                   weight: set.weight,
-                  reps: set.reps
-                }
+                  reps: set.reps,
+                },
               });
             } else {
               log = await ctx.prisma.workoutLog.create({
                 data: {
                   exercise: {
                     connect: {
-                      id: exercise.id
-                    }
+                      id: exercise.id,
+                    },
                   },
                   workout: {
                     connect: {
-                      id: workout.id
-                    }
+                      id: workout.id,
+                    },
                   },
                   user: {
                     connect: {
-                      id: ctx.user.id
-                    }
+                      id: ctx.user.id,
+                    },
                   },
                   weight: set.weight,
-                  reps: set.reps
-                }
+                  reps: set.reps,
+                },
               });
             }
           }
         }
 
+        if (input?.deleteLogs.length) {
+          const deleted = await ctx.prisma.workoutLog.deleteMany({
+            where: {
+              id: { in: input.deleteLogs },
+            },
+          });
+        }
+
         return workout;
-      }
+      },
     });
-  }
+  },
 });

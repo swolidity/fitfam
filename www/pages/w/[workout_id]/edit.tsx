@@ -30,26 +30,26 @@ const EditWorkoutPage: NextPage = () => {
   const { data, loading } = useQuery(GET_WORKOUT, {
     variables: {
       where: {
-        id: router.query.workout_id
-      }
-    }
+        id: router.query.workout_id,
+      },
+    },
   });
   const [startDate, setStartDate] = useState(
     data ? new Date(data?.workout.createdAt).toISOString().slice(0, 19) : null
   );
   const logs = useMemo(() => {
     const normalizedLogs = {};
-    data?.workout?.logs.forEach(log => {
+    data?.workout?.logs.forEach((log) => {
       normalizedLogs[log.exercise.id] = {
         ...log.exercise,
         ...(normalizedLogs[log.exercise.id]?.sets
           ? {
               sets: [
                 ...normalizedLogs[log.exercise.id].sets,
-                { logId: log.id, weight: log.weight, reps: log.reps }
-              ]
+                { logId: log.id, weight: log.weight, reps: log.reps },
+              ],
             }
-          : { sets: [] })
+          : { sets: [] }),
       };
     });
 
@@ -63,9 +63,7 @@ const EditWorkoutPage: NextPage = () => {
       </Box>
     );
 
-  console.log({ logs });
-
-  const handleStartDateChange = e => {
+  const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
   };
 

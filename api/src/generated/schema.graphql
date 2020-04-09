@@ -296,6 +296,7 @@ type Query {
 }
 
 input SaveWorkoutInput {
+  deleteLogs: [ID!]
   exercises: [WorkoutExerciseInput!]!
   title: String!
   volume: Int

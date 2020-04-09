@@ -6,7 +6,8 @@ import {
   Button,
   Input,
   Heading,
-  Text
+  Text,
+  DrawerContent,
 } from "@chakra-ui/core";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
@@ -45,7 +46,7 @@ function workoutReducer(draft, action): any {
     case "addExercise":
       draft.exercises[action.payload.id] = {
         ...action.payload,
-        sets: [{ weight: 0, reps: 1 }]
+        sets: [{ weight: 0, reps: 1 }],
       };
 
       return;
@@ -56,12 +57,12 @@ function workoutReducer(draft, action): any {
     case "weightChange":
       draft.exercises[action.payload.id].sets[action.payload.index] = {
         ...draft.exercises[action.payload.id].sets[action.payload.index],
-        weight: parseInt(action.payload.value)
+        weight: parseInt(action.payload.value),
       };
 
       let volume = 0;
 
-      Object.keys(draft.exercises).forEach(key => {
+      Object.keys(draft.exercises).forEach((key) => {
         const exercise = draft.exercises[key];
 
         const setVolume = exercise.sets.reduce((total, set) => {
@@ -78,12 +79,12 @@ function workoutReducer(draft, action): any {
     case "repChange":
       draft.exercises[action.payload.id].sets[action.payload.index] = {
         ...draft.exercises[action.payload.id].sets[action.payload.index],
-        reps: parseInt(action.payload.value)
+        reps: parseInt(action.payload.value),
       };
 
       let repVolume = 0;
 
-      Object.keys(draft.exercises).forEach(key => {
+      Object.keys(draft.exercises).forEach((key) => {
         const exercise = draft.exercises[key];
 
         const newRepVolume = exercise.sets.reduce((total, set) => {
@@ -98,7 +99,16 @@ function workoutReducer(draft, action): any {
       return;
 
     case "deleteSet":
-      alert("Delete Set");
+      const answer = confirm("Are you sure you want to delete this set?");
+
+      if (answer) {
+        draft.exercises[action.payload.id].sets.splice(action.payload.index, 1);
+
+        if (action.payload.logId) {
+          draft.deleteLogs.push(action.payload.logId);
+        }
+      }
+
       return;
   }
 }
@@ -106,13 +116,14 @@ function workoutReducer(draft, action): any {
 const Track: React.FC<TrackProps> = ({ workout, logs }) => {
   const { data, loading, refetch } = useQuery(TRACK_AUTOCOMPLETE, {
     variables: {
-      name: ""
-    }
+      name: "",
+    },
   });
   const [state, dispatch] = useImmerReducer(workoutReducer, {
     title: workout.title || "",
     volume: 0,
-    exercises: logs || {}
+    exercises: logs || {},
+    deleteLogs: [],
   });
 
   const [saveWorkout, { data: mutationData }] = useMutation(SAVE_WORKOUT, {});
@@ -126,23 +137,23 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
     getInputProps,
     getComboboxProps,
     highlightedIndex,
-    getItemProps
+    getItemProps,
   } = useCombobox({
     items: data?.onetrack,
     onInputValueChange: ({ inputValue }) => {
       refetch({
-        name: inputValue
+        name: inputValue,
       });
     },
-    onSelectedItemChange: changes => {
+    onSelectedItemChange: (changes) => {
       dispatch({ type: "addExercise", payload: changes.selectedItem });
     },
-    itemToString: (item: { id: string; name: string }) => item.name
+    itemToString: (item: { id: string; name: string }) => item.name,
   });
 
   const handleSaveWorkout = (): void => {
     const exercises = [];
-    Object.keys(state.exercises).map(key => {
+    Object.keys(state.exercises).map((key) => {
       const exercise = state.exercises[key];
 
       const { ["__typename"]: remove, ...keep } = exercise;
@@ -156,13 +167,12 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
           workoutId: workout.id,
           title: state.title,
           volume: state.volume,
-          exercises
-        }
-      }
+          exercises,
+          deleteLogs: state.deleteLogs,
+        },
+      },
     });
   };
-
-  console.log({ state });
 
   return (
     <Box width="100%" p={6}>
@@ -191,12 +201,12 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
       <Input
         placeholder="Workout Name"
         value={state.title}
-        onChange={e => {
+        onChange={(e) => {
           dispatch({
             type: "changeWorkoutName",
             payload: {
-              value: e.target.value
-            }
+              value: e.target.value,
+            },
           });
         }}
       />
@@ -204,7 +214,7 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
       <Heading mb={3}>Volume: {state.volume}</Heading>
 
       <Stack spacing={2} mb={3}>
-        {Object.keys(state.exercises).map(key => {
+        {Object.keys(state.exercises).map((key) => {
           const exercise = state.exercises[key];
 
           return (
@@ -225,14 +235,14 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
                         maxWidth="100px"
                         placeholder="Weight"
                         name={`weight-${exercise.id}`}
-                        onChange={e => {
+                        onChange={(e) => {
                           dispatch({
                             type: "weightChange",
                             payload: {
                               id: exercise.id,
                               value: e.target.value,
-                              index: i
-                            }
+                              index: i,
+                            },
                           });
                         }}
                         value={set.weight}
@@ -241,14 +251,14 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
                       <Input
                         maxWidth="100px"
                         placeholder="Reps"
-                        onChange={e => {
+                        onChange={(e) => {
                           dispatch({
                             type: "repChange",
                             payload: {
                               id: exercise.id,
                               value: e.target.value,
-                              index: i
-                            }
+                              index: i,
+                            },
                           });
                         }}
                         value={set.reps}
@@ -256,13 +266,14 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
                     </Flex>
                   </Box>
                   <Button
-                    onClick={e => {
+                    onClick={(e) => {
                       dispatch({
                         type: "deleteSet",
                         payload: {
                           id: exercise.id,
-                          index: i
-                        }
+                          logId: set.logId,
+                          index: i,
+                        },
                       });
                     }}
                   >
@@ -276,8 +287,8 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
                   dispatch({
                     type: "addSet",
                     payload: {
-                      id: exercise.id
-                    }
+                      id: exercise.id,
+                    },
                   });
                 }}
               >
