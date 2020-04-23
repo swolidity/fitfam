@@ -120,7 +120,7 @@ const Track: React.FC<TrackProps> = ({ workout, logs }) => {
     },
   });
   const [state, dispatch] = useImmerReducer(workoutReducer, {
-    title: workout.title || "",
+    title: workout?.title || "",
     volume: 0,
     exercises: logs || {},
     deleteLogs: [],
