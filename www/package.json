@@ -24,17 +24,21 @@
     "apollo-link-http": "^1.5.16",
     "cookie": "^0.4.0",
     "date-fns": "^2.8.1",
+    "downshift": "^5.0.0-alpha.0",
     "emotion-theming": "^10.0.19",
     "fielder": "^1.0.3",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
+    "immer": "^6.0.3",
     "isomorphic-unfetch": "^3.0.0",
     "next": "9.1.2",
     "react": "16.11.0",
     "react-dom": "16.11.0",
     "react-dropzone": "^10.2.1",
     "react-ga": "^2.7.0",
-    "react-icons": "^3.8.0"
+    "react-icons": "^3.8.0",
+    "slug": "^2.1.1",
+    "use-immer": "^0.4.0"
   },
   "devDependencies": {
     "@types/cookie": "^0.3.3",

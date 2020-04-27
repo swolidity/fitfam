@@ -62,7 +62,7 @@ const ProfilePage: React.FC = () => {
     );
 
   return (
-    <Box p={6}>
+    <Box>
       <UserProfile user={data.user} />
     </Box>
   );

@@ -1,9 +1,20 @@
+import React from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Flex, Box, Heading, Image, Text, Link } from "@chakra-ui/core";
+import {
+  Flex,
+  Stack,
+  Box,
+  Heading,
+  Image,
+  Text,
+  Link,
+  Button
+} from "@chakra-ui/core";
 import { formatDistanceToNow } from "date-fns";
 import NextLink from "next/link";
+import DeleteWorkoutButton from "../../components/DeleteWorkoutButton";
 
 const GET_WORKOUT = gql`
   query GET_WORKOUT($where: WorkoutWhereUniqueInput!) {
@@ -45,8 +56,8 @@ const WorkoutPage = () => {
   if (loading) return <Box p={6}>Loading...</Box>;
 
   return (
-    <Box p={6}>
-      <Heading>{data.workout.title}</Heading>
+    <Box p={6} maxWidth="600px" margin="0 auto">
+      <Heading mb={2}>{data.workout.title}</Heading>
 
       <Flex align="center" mb={4}>
         <NextLink href="/[username]" as={`/${data.workout.user.username}`}>
@@ -74,11 +85,25 @@ const WorkoutPage = () => {
         </Box>
       </Flex>
 
-      {data.workout.logs.map(log => (
-        <Box>
-          {log.exercise.name} {log.weight} x {log.reps}
-        </Box>
-      ))}
+      <Stack spacing={2} mb={3}>
+        {data.workout.logs.map(log => (
+          <Box p={2} backgroundColor="#fafafa">
+            {log.exercise.name} {log.weight} x {log.reps}
+          </Box>
+        ))}
+      </Stack>
+
+      <NextLink
+        href="/w/[workout_id]/edit"
+        as={`/w/${data.workout.id}/edit`}
+        passHref
+      >
+        <Link>
+          <Button mr={2}>Edit</Button>
+        </Link>
+      </NextLink>
+
+      <DeleteWorkoutButton workoutId={data.workout.id} />
     </Box>
   );
 };

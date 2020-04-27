@@ -65,3 +65,4 @@ typings/
 
 # mac files
 .DS_store
+.now

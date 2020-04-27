@@ -17,6 +17,27 @@ export const Query = queryType({
       ordering: true
     });
 
+    t.crud.exercise();
+    t.crud.exercises({
+      filtering: true
+    });
+
+    t.list.field("onetrack", {
+      type: "Exercise",
+      args: {
+        name: stringArg()
+      },
+      resolve: async (root, { name }, ctx) => {
+        return await ctx.prisma.exercise.findMany({
+          where: {
+            name: {
+              contains: name
+            }
+          }
+        });
+      }
+    });
+
     t.field("getLoggedInUser", {
       type: "User",
       nullable: true,

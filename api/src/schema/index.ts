@@ -11,6 +11,7 @@ import * as ProfileSong from "./ProfileSong";
 import * as Exercise from "./Exercise";
 import * as Oembed from "./Oembed";
 import * as Supplement from "./Supplement";
+import * as SupplementStack from "./SupplementStack";
 
 import * as path from "path";
 
@@ -25,7 +26,8 @@ export default Nexus.makeSchema({
     ProfileSong,
     Exercise,
     Oembed,
-    Supplement
+    Supplement,
+    SupplementStack,
   ],
   plugins: [nexusPrismaPlugin(), Nexus.fieldAuthorizePlugin()],
   outputs: {
@@ -33,19 +35,19 @@ export default Nexus.makeSchema({
       __dirname,
       "../../node_modules/@types/nexus-typegen/index.d.ts"
     ),
-    schema: path.join(__dirname, "../generated/schema.graphql")
+    schema: path.join(__dirname, "../generated/schema.graphql"),
   },
   typegenAutoConfig: {
     sources: [
       {
-        source: "@prisma/photon",
-        alias: "photon"
+        source: "@prisma/client",
+        alias: "prisma",
       },
       {
         source: require.resolve("../context"),
-        alias: "Context"
-      }
+        alias: "Context",
+      },
     ],
-    contextType: "Context.Context"
-  }
+    contextType: "Context.Context",
+  },
 });
