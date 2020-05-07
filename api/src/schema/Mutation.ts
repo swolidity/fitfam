@@ -31,7 +31,7 @@ export const Mutation = mutationType({
         { url, title, artist, provider, thumbnail },
         ctx
       ) => {
-        const profileSong = await ctx.prisma.profileSongs.create({
+        const profileSong = await ctx.prisma.profileSong.create({
           data: {
             url,
             title,
