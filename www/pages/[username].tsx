@@ -41,9 +41,9 @@ const ProfilePage: React.FC = () => {
   const { loading, error, data } = useQuery(GET_USER_PROFILE, {
     variables: {
       where: {
-        username: "andy"
-      }
-    }
+        username: "andy",
+      },
+    },
   });
 
   if (error) return <div>{error.message}</div>;

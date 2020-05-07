@@ -3,6 +3,7 @@ import { Flex, Box, Stack, Image, Text, Link, Heading } from "@chakra-ui/core";
 import NextLink from "next/link";
 import UserProfileSidebar from "./UserProfileSidebar";
 import UserProfileTabs from "./UserProfileTabs";
+import UserProfileSong from "../components/UserProfileSong";
 
 const UserProfile = ({ user }) => {
   return (
@@ -45,21 +46,7 @@ const UserProfile = ({ user }) => {
         </Box>
       </Box>
 
-      <Heading size="md" mb={2}>
-        {user.workouts.length} workout{user.workouts.length !== 1 ? "s" : ""}
-      </Heading>
-
-      <Stack spacing={2}>
-        {user.workouts.map(workout => {
-          return (
-            <Box key={workout.id} p={2} backgroundColor="#fafafa">
-              <NextLink href="/w/[workout_id]" as={`/w/${workout.id}`}>
-                <Link>{workout.title}</Link>
-              </NextLink>
-            </Box>
-          );
-        })}
-      </Stack>
+      <UserProfileSong user={user} />
     </Box>
   );
 };
