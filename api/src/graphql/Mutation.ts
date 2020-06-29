@@ -1,8 +1,8 @@
-import { mutationType, stringArg, arg } from "nexus";
+import { schema } from "nexus";
 import { extract } from "oembed-parser";
 import slug from "slug";
 
-export const Mutation = mutationType({
+export const Mutation = schema.mutationType({
   definition(t) {
     t.crud.createOneBodyweight({
       authorize: () => false,
@@ -20,18 +20,18 @@ export const Mutation = mutationType({
     t.field("addProfileSong", {
       type: "ProfileSong",
       args: {
-        url: stringArg(),
-        title: stringArg(),
-        artist: stringArg(),
-        provider: stringArg(),
-        thumbnail: stringArg(),
+        url: schema.stringArg(),
+        title: schema.stringArg(),
+        artist: schema.stringArg(),
+        provider: schema.stringArg(),
+        thumbnail: schema.stringArg(),
       },
       resolve: async (
         root,
         { url, title, artist, provider, thumbnail },
         ctx
       ) => {
-        const profileSong = await ctx.prisma.profileSong.create({
+        const profileSong = await ctx.db.profileSong.create({
           data: {
             url,
             title,
@@ -53,13 +53,13 @@ export const Mutation = mutationType({
     t.field("editProfile", {
       type: "User",
       args: {
-        picture: stringArg({
+        picture: schema.stringArg({
           nullable: true,
         }),
-        bio: stringArg({
+        bio: schema.stringArg({
           nullable: true,
         }),
-        instagram: stringArg({
+        instagram: schema.stringArg({
           nullable: true,
         }),
       },
@@ -87,7 +87,7 @@ export const Mutation = mutationType({
       resolve: async (root, { input }, ctx) => {
         let workout;
         if (input?.workoutId) {
-          workout = await ctx.prisma.workout.update({
+          workout = await ctx.db.workout.update({
             where: {
               id: input.workoutId,
             },
@@ -114,7 +114,7 @@ export const Mutation = mutationType({
           for (const set of exercise.sets) {
             let log;
             if (set.logId) {
-              log = await ctx.prisma.workoutLog.update({
+              log = await ctx.db.workoutLog.update({
                 where: {
                   id: set.logId,
                 },
@@ -124,7 +124,7 @@ export const Mutation = mutationType({
                 },
               });
             } else {
-              log = await ctx.prisma.workoutLog.create({
+              log = await ctx.db.workoutLog.create({
                 data: {
                   exercise: {
                     connect: {

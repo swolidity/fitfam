@@ -1,11 +1,11 @@
-import { objectType } from "nexus";
+import { schema } from "nexus";
 
-export const Exercise = objectType({
+export const Exercise = schema.objectType({
   name: "Exercise",
   definition(t) {
     t.model.id();
     t.model.name();
     t.model.createdAt();
     t.model.updatedAt();
-  }
+  },
 });

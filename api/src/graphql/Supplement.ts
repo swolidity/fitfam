@@ -1,6 +1,6 @@
-import { objectType } from "nexus";
+import { schema } from "nexus";
 
-export const Supplement = objectType({
+export const Supplement = schema.objectType({
   name: "Supplement",
   definition(t) {
     t.model.id();
@@ -11,5 +11,5 @@ export const Supplement = objectType({
     t.model.added_by();
     t.model.createdAt();
     t.model.updatedAt();
-  }
+  },
 });

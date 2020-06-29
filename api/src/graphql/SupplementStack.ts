@@ -1,6 +1,6 @@
-import { objectType } from "nexus";
+import { schema } from "nexus";
 
-export const SupplementStack = objectType({
+export const SupplementStack = schema.objectType({
   name: "SupplementStack",
   definition(t) {
     t.model.id();
@@ -8,5 +8,5 @@ export const SupplementStack = objectType({
     t.model.supplements();
     t.model.createdAt();
     t.model.updatedAt();
-  }
+  },
 });

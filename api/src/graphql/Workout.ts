@@ -1,6 +1,6 @@
-import { objectType, inputObjectType } from "nexus";
+import { schema } from "nexus";
 
-export const Workout = objectType({
+export const Workout = schema.objectType({
   name: "Workout",
   definition(t) {
     t.model.id();
@@ -15,7 +15,7 @@ export const Workout = objectType({
   },
 });
 
-export const WorkoutSetsInput = inputObjectType({
+export const WorkoutSetsInput = schema.inputObjectType({
   name: "WorkoutSetsInput",
   definition(t) {
     t.id("logId");
@@ -26,7 +26,7 @@ export const WorkoutSetsInput = inputObjectType({
   },
 });
 
-export const WorkoutExerciseInput = inputObjectType({
+export const WorkoutExerciseInput = schema.inputObjectType({
   name: "WorkoutExerciseInput",
   definition(t) {
     t.id("id");
@@ -38,7 +38,7 @@ export const WorkoutExerciseInput = inputObjectType({
   },
 });
 
-export const SaveWorkoutInput = inputObjectType({
+export const SaveWorkoutInput = schema.inputObjectType({
   name: "SaveWorkoutInput",
   definition(t) {
     t.id("workoutId");

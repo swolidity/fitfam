@@ -1,6 +1,6 @@
-import { objectType } from "nexus";
+import { schema } from "nexus";
 
-export const WorkoutLog = objectType({
+export const WorkoutLog = schema.objectType({
   name: "WorkoutLog",
   definition(t) {
     t.model.id();
@@ -11,5 +11,5 @@ export const WorkoutLog = objectType({
     t.model.reps();
     t.model.createdAt();
     t.model.updatedAt();
-  }
+  },
 });

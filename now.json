@@ -25,7 +25,7 @@
       "use": "@now/node"
     },
     {
-      "src": "api/src/index.ts",
+      "src": "api/dist/app.js",
       "use": "@now/node",
       "config": {
         "maxLambdaSize": "25mb"
@@ -41,7 +41,7 @@
     },
     {
       "src": "/api/(.*)",
-      "dest": "/api/src/index.ts"
+      "dest": "/api/dist/app.js"
     },
     { "src": "/(.*)", "dest": "/www/$1", "continue": true }
   ]

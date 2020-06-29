@@ -1,6 +1,6 @@
-import { objectType } from "nexus";
+import { schema } from "nexus";
 
-export const User = objectType({
+export const User = schema.objectType({
   name: "User",
   definition(t) {
     t.model.id();
@@ -11,15 +11,15 @@ export const User = objectType({
     t.model.picture();
     t.model.bodyweights({
       ordering: true,
-      pagination: true
+      pagination: true,
     });
     t.model.profile_songs({
       ordering: true,
-      pagination: true
+      pagination: true,
     });
     t.model.workouts({
       ordering: true,
-      pagination: true
+      pagination: true,
     });
     t.model.supplement_stack();
     t.model.instagram();
@@ -27,5 +27,5 @@ export const User = objectType({
     t.model.dateOfBirth();
     t.model.createdAt();
     t.model.updatedAt();
-  }
+  },
 });

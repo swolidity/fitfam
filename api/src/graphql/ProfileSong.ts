@@ -1,6 +1,6 @@
-import { objectType } from "nexus";
+import { schema } from "nexus";
 
-export const ProfileSong = objectType({
+export const ProfileSong = schema.objectType({
   name: "ProfileSong",
   definition(t) {
     t.model.id();
@@ -12,5 +12,5 @@ export const ProfileSong = objectType({
     t.model.provider();
     t.model.createdAt();
     t.model.updatedAt();
-  }
+  },
 });

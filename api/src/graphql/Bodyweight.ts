@@ -1,6 +1,6 @@
-import { objectType } from "nexus";
+import { schema } from "nexus";
 
-export const Bodyweight = objectType({
+export const Bodyweight = schema.objectType({
   name: "Bodyweight",
   definition(t) {
     t.model.id();
@@ -8,5 +8,5 @@ export const Bodyweight = objectType({
     t.model.user();
     t.model.createdAt();
     t.model.updatedAt();
-  }
+  },
 });

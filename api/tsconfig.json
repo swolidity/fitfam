@@ -3,9 +3,13 @@
     "target": "es2016",
     "module": "commonjs",
     "lib": ["esnext"],
-    "rootDir": "./",
+    "rootDir": "src",
     "strict": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "plugins": [{ "name": "nexus/typescript-language-service" }],
+    "typeRoots": ["node_modules/@types", "types"],
+    "noEmit": true
   },
+  "include": ["src", "types.d.ts"],
   "exclude": ["prisma/**/*"]
 }

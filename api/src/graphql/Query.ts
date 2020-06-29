@@ -1,41 +1,41 @@
-import { queryType, stringArg, scalarType } from "nexus";
+import { schema } from "nexus";
 import { extract } from "oembed-parser";
 import AWS from "aws-sdk";
 import uuid from "uuid";
 
-export const Query = queryType({
+export const Query = schema.queryType({
   definition(t) {
     t.crud.user();
     t.crud.users({
       type: "User",
-      ordering: true
+      ordering: true,
     });
 
     t.crud.bodyweight({});
     t.crud.bodyweights({
       type: "Bodyweight",
-      ordering: true
+      ordering: true,
     });
 
     t.crud.exercise();
     t.crud.exercises({
-      filtering: true
+      filtering: true,
     });
 
     t.list.field("onetrack", {
       type: "Exercise",
       args: {
-        name: stringArg()
+        name: schema.stringArg(),
       },
       resolve: async (root, { name }, ctx) => {
-        return await ctx.prisma.exercise.findMany({
+        return await ctx.db.exercise.findMany({
           where: {
             name: {
-              contains: name
-            }
-          }
+              contains: name,
+            },
+          },
         });
-      }
+      },
     });
 
     t.field("getLoggedInUser", {
@@ -43,7 +43,7 @@ export const Query = queryType({
       nullable: true,
       resolve: async (root, args, ctx) => {
         return ctx.user;
-      }
+      },
     });
 
     t.crud.workout();
@@ -53,24 +53,24 @@ export const Query = queryType({
     t.field("oembed", {
       type: "Oembed",
       args: {
-        url: stringArg()
+        url: schema.stringArg(),
       },
       resolve: async (root, { url }, ctx) => {
         const oembed = await extract(url);
 
         return oembed;
-      }
+      },
     });
 
     t.field("getPresignedUploadUrl", {
-      type: scalarType({
+      type: schema.scalarType({
         name: "PresignedUploadURL",
         serialize(value) {
           return value;
-        }
+        },
       }),
       args: {
-        directory: stringArg()
+        directory: schema.stringArg(),
       },
       resolve: async (root, { directory }, ctx) => {
         const key = `${directory}/${uuid.v4()}`;
@@ -78,7 +78,7 @@ export const Query = queryType({
         const s3 = new AWS.S3({
           accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
-          region: "us-east-1"
+          region: "us-east-1",
         });
 
         let url;
@@ -88,7 +88,7 @@ export const Query = queryType({
             Key: key,
             ContentType: "image/*",
             ACL: "public-read",
-            Expires: 300
+            Expires: 300,
           });
         } catch (e) {
           console.log(e.message);
@@ -97,7 +97,7 @@ export const Query = queryType({
         console.log("url", url);
 
         return url;
-      }
+      },
     });
-  }
+  },
 });

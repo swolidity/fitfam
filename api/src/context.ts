@@ -16,8 +16,8 @@ const getUser = async (prisma: PrismaClient, token: string) => {
       try {
         user = await prisma.user.findOne({
           where: {
-            id: decoded.user_id
-          }
+            id: decoded.user_id,
+          },
         });
       } catch (e) {
         throw new Error("User does not exist.");
@@ -29,7 +29,6 @@ const getUser = async (prisma: PrismaClient, token: string) => {
 };
 
 export type Context = {
-  prisma: PrismaClient;
   user: null | User;
 };
 
@@ -49,8 +48,5 @@ export const createContext = async (req): Promise<Context> => {
     user = await getUser(prisma, token);
   }
 
-  return {
-    prisma,
-    user
-  };
+  return user;
 };
