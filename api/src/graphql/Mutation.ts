@@ -20,17 +20,19 @@ export const Mutation = schema.mutationType({
     t.field("addProfileSong", {
       type: "ProfileSong",
       args: {
-        url: schema.stringArg(),
-        title: schema.stringArg(),
-        artist: schema.stringArg(),
-        provider: schema.stringArg(),
-        thumbnail: schema.stringArg(),
+        url: schema.stringArg({ nullable: false }),
+        title: schema.stringArg({ nullable: false }),
+        artist: schema.stringArg({ nullable: false }),
+        provider: schema.stringArg({ nullable: false }),
+        thumbnail: schema.stringArg({ nullable: false }),
       },
       resolve: async (
         root,
         { url, title, artist, provider, thumbnail },
         ctx
       ) => {
+        if (!ctx.user) throw new Error("Not Authorized!");
+
         const profileSong = await ctx.db.profileSong.create({
           data: {
             url,
@@ -54,7 +56,7 @@ export const Mutation = schema.mutationType({
       type: "User",
       args: {
         picture: schema.stringArg({
-          nullable: true,
+          nullable: false,
         }),
         bio: schema.stringArg({
           nullable: true,
@@ -64,7 +66,9 @@ export const Mutation = schema.mutationType({
         }),
       },
       resolve: async (root, { picture, bio, instagram }, ctx) => {
-        const user = ctx.prisma.users.update({
+        if (!ctx.user) throw new Error("Not Authorized!");
+
+        const user = ctx.db.user.update({
           where: {
             id: ctx.user?.id,
           },
@@ -85,6 +89,9 @@ export const Mutation = schema.mutationType({
         input: "SaveWorkoutInput",
       },
       resolve: async (root, { input }, ctx) => {
+        if (!ctx.user) throw new Error("Not Authorized!");
+        if (!input) throw new Error("No workout data was received.");
+
         let workout;
         if (input?.workoutId) {
           workout = await ctx.db.workout.update({
@@ -97,7 +104,7 @@ export const Mutation = schema.mutationType({
             },
           });
         } else {
-          workout = await ctx.prisma.workout.create({
+          workout = await ctx.db.workout.create({
             data: {
               title: input.title,
               slug: slug(input.title),
@@ -149,8 +156,8 @@ export const Mutation = schema.mutationType({
           }
         }
 
-        if (input?.deleteLogs.length) {
-          const deleted = await ctx.prisma.workoutLog.deleteMany({
+        if (input.deleteLogs?.length) {
+          const deleted = await ctx.db.workoutLog.deleteMany({
             where: {
               id: { in: input.deleteLogs },
             },

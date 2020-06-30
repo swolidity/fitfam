@@ -153,7 +153,7 @@ The `JSON` scalar type represents JSON objects as specified by [ECMA-404](http:/
 scalar Json
 
 type Mutation {
-  addProfileSong(artist: String, provider: String, thumbnail: String, title: String, url: String): ProfileSong
+  addProfileSong(artist: String!, provider: String!, thumbnail: String!, title: String!, url: String!): ProfileSong
   createOneBodyweight(data: BodyweightCreateInput!): Bodyweight!
   createOneExercise(data: ExerciseCreateInput!): Exercise!
   createOneProfileSong(data: ProfileSongCreateInput!): ProfileSong!
@@ -161,7 +161,7 @@ type Mutation {
   createOneWorkout(data: WorkoutCreateInput!): Workout!
   createOneWorkoutLog(data: WorkoutLogCreateInput!): WorkoutLog!
   deleteOneWorkout(where: WorkoutWhereUniqueInput!): Workout
-  editProfile(bio: String, instagram: String, picture: String): User
+  editProfile(bio: String, instagram: String, picture: String!): User
   saveWorkout(input: SaveWorkoutInput): Workout
 }
 
@@ -194,17 +194,17 @@ type Oembed {
   author_name: String
   author_url: String
   cache_age: String
-  height: String
+  height: Int
   html: String
   provider_name: String
   provider_url: String
-  thumbnail_height: String
+  thumbnail_height: Int
   thumbnail_url: String
-  thumbnail_width: String
+  thumbnail_width: Int
   title: String
   type: String
   version: String
-  width: String
+  width: Int
 }
 
 enum OrderByArg {
@@ -719,7 +719,7 @@ input WorkoutCreateWithoutUserInput {
 }
 
 input WorkoutExerciseInput {
-  id: ID
+  id: ID!
   name: String
   sets: [WorkoutSetsInput!]!
 }

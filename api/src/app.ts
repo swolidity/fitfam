@@ -1,5 +1,5 @@
 import { schema } from "nexus";
-//import { createContext } from "./context";
+import { createContext } from "./context";
 import { use } from "nexus";
 import { prisma } from "nexus-plugin-prisma";
 
@@ -11,4 +11,4 @@ use(
   })
 );
 
-//schema.addToContext(async (req) => createContext(req));
+schema.addToContext(async (req) => createContext(req));

@@ -5,7 +5,9 @@ export const Oembed = schema.objectType({
   definition(t) {
     t.string("type");
     t.string("version");
-    t.string("title");
+    t.string("title", {
+      nullable: true,
+    });
     t.string("author_name", {
       nullable: true,
     });
@@ -24,19 +26,19 @@ export const Oembed = schema.objectType({
     t.string("thumbnail_url", {
       nullable: true,
     });
-    t.string("thumbnail_width", {
+    t.int("thumbnail_width", {
       nullable: true,
     });
-    t.string("thumbnail_height", {
+    t.int("thumbnail_height", {
       nullable: true,
     });
     t.string("html", {
       nullable: true,
     });
-    t.string("width", {
+    t.int("width", {
       nullable: true,
     });
-    t.string("height", {
+    t.int("height", {
       nullable: true,
     });
   },

@@ -1,4 +1,5 @@
 import { PrismaClient, User } from "@prisma/client";
+import { Request } from "nexus/dist/runtime/schema/schema";
 
 import jwt from "jsonwebtoken";
 
@@ -28,15 +29,15 @@ const getUser = async (prisma: PrismaClient, token: string) => {
   );
 };
 
-export type Context = {
-  user: null | User;
+export type CustomContext = {
+  user: void | User;
 };
 
-export const createContext = async (req): Promise<Context> => {
+export const createContext = async (req: Request): Promise<CustomContext> => {
   // get the user token from the headers
   let token = req.headers.authorization || "";
 
-  let user = null;
+  let user;
 
   if (token) {
     if (token.startsWith("Bearer ")) {
@@ -48,5 +49,5 @@ export const createContext = async (req): Promise<Context> => {
     user = await getUser(prisma, token);
   }
 
-  return user;
+  return { user };
 };

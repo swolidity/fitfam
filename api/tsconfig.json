@@ -8,7 +8,8 @@
     "outDir": "dist",
     "plugins": [{ "name": "nexus/typescript-language-service" }],
     "typeRoots": ["node_modules/@types", "types"],
-    "noEmit": true
+    "noEmit": true,
+    "esModuleInterop": true
   },
   "include": ["src", "types.d.ts"],
   "exclude": ["prisma/**/*"]

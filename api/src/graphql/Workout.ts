@@ -29,7 +29,9 @@ export const WorkoutSetsInput = schema.inputObjectType({
 export const WorkoutExerciseInput = schema.inputObjectType({
   name: "WorkoutExerciseInput",
   definition(t) {
-    t.id("id");
+    t.id("id", {
+      required: true,
+    });
     t.string("name");
     t.list.field("sets", {
       type: WorkoutSetsInput,

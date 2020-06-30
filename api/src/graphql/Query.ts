@@ -1,5 +1,5 @@
 import { schema } from "nexus";
-import { extract } from "oembed-parser";
+import { extract, OembedData } from "oembed-parser";
 import AWS from "aws-sdk";
 import uuid from "uuid";
 
@@ -31,7 +31,7 @@ export const Query = schema.queryType({
         return await ctx.db.exercise.findMany({
           where: {
             name: {
-              contains: name,
+              contains: name!,
             },
           },
         });
@@ -42,6 +42,8 @@ export const Query = schema.queryType({
       type: "User",
       nullable: true,
       resolve: async (root, args, ctx) => {
+        if (!ctx.user) return null;
+
         return ctx.user;
       },
     });
@@ -50,13 +52,19 @@ export const Query = schema.queryType({
 
     t.crud.supplements();
 
+    interface CustomOembedData extends OembedData {
+      html?: string;
+      width?: number;
+      height?: number;
+    }
+
     t.field("oembed", {
       type: "Oembed",
       args: {
         url: schema.stringArg(),
       },
       resolve: async (root, { url }, ctx) => {
-        const oembed = await extract(url);
+        const oembed: CustomOembedData = await extract(url!);
 
         return oembed;
       },

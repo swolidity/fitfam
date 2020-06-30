@@ -33,6 +33,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/passport": "^0.4.7",
     "@types/passport-facebook": "^2.1.10",
+    "@types/slug": "^0.9.1",
     "@types/uuid": "^3.4.9",
     "ts-node": "^8.10.2",
     "ts-node-dev": "^1.0.0-pre.49",
