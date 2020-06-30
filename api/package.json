@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nexus dev",
     "build": "nexus build",
-    "start": "node node_modules/.build"
+    "start": "node dist/src"
   },
   "dependencies": {
     "@prisma/client": "^2.1.3",
