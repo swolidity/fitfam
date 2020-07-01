@@ -19,30 +19,6 @@
       "GRAPHQL_API_URL": "@fitfam-graphql-api-url"
     }
   },
-  "builds": [
-    {
-      "src": "api/routes/*.ts",
-      "use": "@now/node"
-    },
-    {
-      "src": "api/dist/app.js",
-      "use": "@now/node",
-      "config": {
-        "maxLambdaSize": "25mb"
-      }
-    },
-
-    { "src": "www/package.json", "use": "@now/next@2.3.1" }
-  ],
-  "routes": [
-    {
-      "src": "/api/facebook-auth",
-      "dest": "/api/routes/facebook-auth.ts"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/dist/app.js"
-    },
-    { "src": "/(.*)", "dest": "/www/$1", "continue": true }
-  ]
+  "builds": [{ "src": "www/package.json", "use": "@now/next@2.3.1" }],
+  "routes": [{ "src": "/(.*)", "dest": "/www/$1", "continue": true }]
 }
