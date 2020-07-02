@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "FitFam",
   "alias": "fitfam.me",
   "env": {
     "API_URL": "@fitfam-api-url",
@@ -25,7 +24,7 @@
       "use": "@now/node"
     },
     {
-      "src": "api/dist/src/app.js",
+      "src": "api/dist/src/index.js",
       "use": "@now/node",
       "config": {
         "maxLambdaSize": "25mb"
@@ -41,7 +40,7 @@
     },
     {
       "src": "/graphql",
-      "dest": "/api/dist/src/app.js"
+      "dest": "/api/dist/src/index.js"
     },
     { "src": "/(.*)", "dest": "/www/$1", "continue": true }
   ]
