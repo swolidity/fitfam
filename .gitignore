@@ -68,3 +68,4 @@ typings/
 .now
 
 /api/dist
+.vercel
